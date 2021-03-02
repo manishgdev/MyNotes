@@ -1,0 +1,13 @@
+https://www.youtube.com/watch?v=h7piyWnQbZA&list=WL&index=11
+Why Generics?
+	When same class is required to work upon different objects then Generics comes in handy such that we don't have to create multiple classes with same content to handle different object types
+	
+Bound Type
+	we can bound what type of Generics can be defined for the class
+	NumberFns<T extends Number>
+	
+	now the class accepts only Number types i.e. Integer, Float, Double
+	
+WildCard
+	NumberFns<?>
+	

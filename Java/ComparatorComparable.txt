@@ -1,0 +1,8 @@
+Comparator v/s Comparable
+	Comparable
+		java.lang
+		compareTo(T o)
+		
+	Comparator
+		java.util
+		compareTo(T o1, T o2)

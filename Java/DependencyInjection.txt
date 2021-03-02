@@ -1,0 +1,71 @@
+Dependency Injection
+
+	- A way of decoupling hard-core dependencies
+	
+	A Drawing Application
+		Circle
+			- draw()
+		Triangle
+			- draw()
+	
+		Application class
+			Triangle myTriangle = new Triangle();
+			myTriangle.draw();
+			
+			Circle myCircle = new Circle();
+			myCircle.draw();
+	
+	Using Polymorphism
+		Shape Interface
+			draw()
+		
+		Circle extends Shape
+			draw()
+		
+		Triangle extends Shape
+			draw()
+		
+		Application class
+			Shape myShape = new Triangle();
+			myShape.draw();
+			
+			myShape = new Circle();
+			myShape.draw();
+			
+	Using Method Parameter
+		Application class
+			public void myDrawMethod(Shape shape) {
+				shape.draw();
+			}
+			
+			main method
+				Shape shape = new Triangle();
+				myDrawMethod(shape);
+	
+	Class Member Variable
+		Drawing
+			public class Shape {
+				private Shape shape;
+				
+				public void setShape(Shape shape) {
+					this.shape = shape;
+				}
+				
+				public Shape getShape() {
+					return shape;
+				}
+				
+				public void drawShape() {
+					this.shape.draw();
+				}
+			}
+			
+			SomeOtherClass
+			------------------
+			Shape triangle = new Triangle();
+			drawing.setShape(triangle);
+			drawing.drawShape();
+			
+		- Here drawing class doesn't need to be bothered about instantiation of Shape, whatever shape is passed it will draw
+		- Drawing implementation doesn't need to change
+		- Drawing class doesn't own the relationship of shape, dependency of Shape is injected into Drawing class

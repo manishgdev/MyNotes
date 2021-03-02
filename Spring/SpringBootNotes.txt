@@ -1,0 +1,118 @@
+Creating Spring Boot Project
+	Spring Initializer (start.spring.io)
+		populate all the fields and click generate, it will generate project skeleton
+		
+	Spring Boot CLI
+		Install the Spring Boot CLI and use it from command prompt
+		
+	Using the Spring Tools Suite (STS) IDE
+
+Spring Boot
+	A way in which we can boostrap Spring application
+	
+	Spring framework to write Java EE application
+	
+	Spring Boot makes it easy to create stand-alone, production-grade Spring based application that you can just run
+	
+	Opinionated
+	Convention over configuration (for majority of requirements no configuration will be required)
+	Stand alone application (has server i.e. the container to run the application, no need to deploy application on server)
+	Production ready
+	
+	Preset combination of JARs and dependencies that work together well is provided by Spring Boot and is known as "Bill of Materials"
+	
+Controlling Configuration
+	place the application.properties in src/main/resources folder and define appropriate key
+	
+	
+Embeded Tomcat Server
+	Convenience
+	Servlet container config becomes part of application config
+	Standalone application
+	useful for microservices architecture
+	
+	
+Spring and Some of its problems
+	Application Framework - provides model to build application
+	Concepts of its origin from Dependency Injects
+	Infrastructure support (like connecting to XYZ database)
+	Programming and Configuration model
+	
+	Problems
+		Huge framework (hundreds of components)
+		Multiple Setup steps
+		Multiple Configuration steps
+		Multiple build and deploy steps
+		
+		
+@SpringBootApplication
+	starting point of the application
+	
+SpringApplication.run(CourseApiApp.class, args); - creates the servlet container and runs it
+	- sets up default configuration
+	- starts Spring application context
+	- Performs class path scan
+	- Start Tomcat server
+	
+@RestController - Controller SpringMVC
+	Java class marked with Annotation
+	Has info about
+		what URL access triggers it
+		what method to run when accessed
+		
+	URI, HTTP Method, Functionality (Java Method)
+	
+@RequestMapping - SpringMVC
+	for the returned object in JSON format the JSON key name will be corresponding to property names
+    of the bean
+	
+@PathVariable
+	maps the path variable to method parameter
+	by default it matches the variable names same as that of parameter name
+	for path variable different then parameter name
+		@RequestMapping("/topics/{foo}")
+		public Topic getTopic(@PathVariable("foo") int id) {
+		}
+		
+@RequestBody
+	maps the JSON object to the Java Object provided JSON object has same keynames as present in Java Bean
+
+@ComponentScan
+	By default spring searches for the component in child packages from where the application is started, if the component is not in the child package then we can use this annotation to scan the desired package as well
+	@ComponentScan("fully_qualified_package_name")
+	
+End-Point Examples
+	GET	/topics Gets all topics
+	GET /topics/id	Gets specific id
+	POST	/topics	Creates a new topics
+	PUT		/topics/id Updates a specific topics
+	DELETE	/topics/id Deletes a specific topics
+
+@Service - Business services - StereoType annotation	
+	Singleton classes in spring
+	
+@Autowired - Dependency Injection
+
+JPA - Java Persistent API
+	JPA is a way to use ORM
+	ORM - Object Relational Mapping
+		Map Entity Class into SQL tables (Class <-> Table)
+	
+	CrudRepository Interface
+		contains implementations for possible operations on database
+	
+@Entity - javax.persistence
+	map class into a table
+	
+@Id - javax.persistence
+	mark the field as primary variable
+	
+@ManyToOne 
+	establish many-to-one relationship
+	
+	
+
+
+	
+	
+	
