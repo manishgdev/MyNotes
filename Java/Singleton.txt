@@ -1,0 +1,33 @@
+Singleton
+============
+	- A singleton class is a class that can have only one object (an instance of the class) at a time.
+	- After first time, if we try to instantiate the Singleton class, the new variable also points to the first instance created. So whatever modifications we do to any variable inside the class through any instance, it affects the variable of the single instance created and is visible if we access that variable through any variable of that class type defined.
+
+	To design a singleton class:
+		- Make constructor as private.
+		- Write a static method that has return type object of this singleton class. Here, the concept of Lazy initialization is used to write this static method.
+		
+	class Singleton {
+		private String str;
+		
+		private static Singleton classObj;
+		
+		private Singleton() {
+			System.out.println("Hi I am the constructor and I'll be called only once");
+		}
+		
+		public void setStr(String str) {
+			this.str = str;
+		}
+		
+		public String getStr() {
+			return str;
+		}
+		
+		public static Singleton getInstance() {
+			if(classObj != null)
+				return classObj;
+			classObj = new Singleton();
+			return classObj;
+		}
+	}

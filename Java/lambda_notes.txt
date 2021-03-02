@@ -1,0 +1,245 @@
+https://javabrains.thinkific.com/courses/take/java-8-lambda-basics/
+
+Why Lambdas
+===============================================
+	Enables Functional Programming
+	Readable and Concise code
+	Easy-to-use APIs and libraries
+	Enables support for parallel processing using Stream
+
+Lambdas
+=================================================
+	Functions which donot belong to a class, they are not methods of a class, they are just methods in isolation
+	Functions can be treated as values
+	
+	take a method, remove the modifiers, remove the return type, remove the method name, add '->' between parenthesis ')' and start of block '{', what's left is a lambda function
+	
+	for one liner lambdas curly braces are not required and return keyword can be skipped
+	
+	Lamdba Expressions are not shortcut to anonymous inner class
+	
+	Java compiler does Type inference - Compiler automatically infers the type of parameter for the lambda expression as it already knows the signature of method in the interface
+
+Lambda Expression Examples
+===================================================
+	greetingFn = () -> System.out.println("Hello World");
+	doubleNumFn = (int a) -> a * 2;
+	addFn = (int a, int b) -> a + b;
+	safeDivideFn = (int a, int b) -> {
+		if(b == 0) return 0;
+		return a / b;
+	}
+	strLenCountFn = (String s) -> s.length();
+	
+	strLambda = (a) -> a.length(); // we can eliminate the parenthesis for single parameter lambda expression
+	
+Interface Implementation v/s Lambda Implementation
+=====================================================
+	Let's assume interface Greeting has method perform
+	GreetingImpl implement Greeting interface and provides implementation for perform method
+	
+	Interface Implementation
+		Greeting greeting = new GreetingImpl();
+		greeting.perform();
+		
+		In interface implementation we are calling the interface method on an object of class which is implementing the interface
+	
+	Lambda Implementation
+		Greeting lambdaGreet = () -> System.out.println("Hello World");
+		lambdaGreet.perform();
+		
+		We are not creating a class, we are creating an inline function which matches the signature of interface method and call the interface method to execute
+	
+Type of Lambda Expression
+========================================
+	Lambda expression signature should match with the method present in Interface which is going to be the type of the Lambda expression
+	
+	Functional Interfaces are the interfaces having only one method and acts as type of the Lambda expression	
+
+Functional Interface
+=========================================
+	A functional interface in Java is an interface that contains only a single abstract (unimplemented) method.
+	A functional interface can contain default and static methods which do have an implementation, in addition to the single unimplemented method.
+	
+	As a practice we can add @FunctionalInterface annotation to the interface but it is not compulsory.
+	 
+Functional v/s Object Oriented Programming
+===========================================
+	OOP
+		Everything is object
+		All Code blocks are associated with classes and objects
+		
+
+java.util.function
+===========================================
+	package contains lot of FunctionalInterfaces which can be used to eliminate the need of creating our own Functional interface
+	
+Closures
+===========================================
+	for accessing local variables inside anonymous inner class or lambda expression the compiler automatically considers the variables to be final, and if we attempt to edit the value of variable the compiler will complain as below
+		"Local variable b defined in an enclosing scope must be final or effectively final"
+	
+	even though a local variable is not part of the lambda input but it will be processed by the lambda exression, this is known as closure, the local variable will be considered as effectively final
+	
+	public class SimpleClosure {
+	public static void main(String[] args) {
+		int a = 10;
+		int b = 20;
+		
+		doProcess(a, new SimpleProcess() {
+			
+			@Override
+			public void process(int i) {
+				// b = 50;   // cannot be done as b is effectively considered to be final
+				/*
+				 * In below statement even though we haven't declared b as final, java 8 will consider it to be final and will not complain
+				 * The moment we try to change the value of b, compiler will give warning as "Local variable b defined in an enclosing scope must be final or effectively final"
+				 */
+				System.out.println("After Processing Values :- "+ (i + b));
+			}
+		});
+	}
+
+	public static void doProcess(int i, SimpleProcess p) {
+		p.process(i);
+	}
+	
+	interface SimpleProcess {
+		void process(int i);
+	}
+
+'this' cannot be accessed in a static context
+========================================================
+	Because this refers to the object instance. There is no object instance in a call of a static method. But of course you can access your static field (only the static ones!). Just use
+
+	class Sub {
+		static int y;
+		public static void foo() {
+			 y = 10;
+		}
+	}
+	If you want to make sure you get the static field y and not some local variable with the same name, use the class name to specify:
+
+	class Sub {
+		static int y;
+		public static void foo(int y) {
+			 Sub.y = y;
+		}
+	}
+	
+'this' inside Lambdas
+=====================================
+	In case of Anonymous Inner Class, this refers to instance of Anonymous Inner Class
+	In case of lambda, the instance of Lambda doesn't touch/modify the this reference which comes by design, the value of this reference will be same as what it would've been outside the Lambda Expression
+	public class ThisRefExample {
+
+		public void doProcess(int i, SimpleProcess p) {
+			p.process(i);
+		}
+
+		public void execute() {
+			doProcess(5, p -> {
+				System.out.println("Processing inside Lambda Expression val = " + p);
+				System.out.println(this); // this refers to instance of the object having execute method
+			});
+		}
+		public static void main(String args[]) {
+			ThisRefExample tr = new ThisRefExample();
+			System.out.println("Exeucte from static main method using Anonymous Inner Class");
+			tr.doProcess(20, new SimpleProcess() {
+
+				@Override
+				public void process(int i) {
+					System.out.println("Processing inside Anonymous Inner class val = " + i);
+					System.out.println(this);
+				}
+
+				@Override
+				public String toString() {
+					return "This is reference of Anonymous inner class";
+				}
+			});
+			// System.out.println(this); // this cann't be accessed in static context
+			
+			tr.doSomeProcess(10, t -> {
+				System.out.println("Value of t = "+ t);
+				// System.out.println(this); // this cann't be used here also, as the lambda expression will 
+											//refer 'this' as the same way it would've been accessed outside
+											// the lambda expression
+			});
+		}
+		interface SimpleProcess {
+			void process(int i);
+		}
+
+		@Override
+		public String toString() {
+			return "This is 'ThisRefExample' class";
+		}
+	}
+	
+	In Lambda Expression 'this' refers to instance of the calling method if used inside instance method
+	
+	//  the use of 'this' keyword makes Lambda Expressions different than Anonymous Inner Class
+
+Method Reference
+================================
+	public class TestExample {
+		public static void main(String[] args) {
+			System.out.println("Normal Lambda Expression");
+			Thread t = new Thread(() -> noArg());
+			t.start();
+
+			System.out.println("\nNo Parameter Method Reference");
+			t = new Thread(TestExample::noArg);
+			t.start();
+
+			System.out.println("\nOne Parameter Lambda Expression");
+			Consumer<String> te = p -> oneParam(p);
+			te.accept("ABC");
+			
+			System.out.println("\nOne Parameter Method Reference");
+			te = TestExample::oneParam;
+			te.accept("ABC");
+			
+			System.out.println("\nTwo Parameter Lambda Expression");
+			BiConsumer<String, String> bc = (x, y) -> twoParam(x, y);
+			bc.accept("Manish", "Singh");
+			
+			System.out.println("\nTwo Parameter Lambda Expression");
+			bc = TestExample::twoParam;
+			bc.accept("Manish", "Singh");
+		}
+
+		public static void noArg() {
+			System.out.println("No Argument method");
+		}
+
+		public static void oneParam(String s) {
+			System.out.println("val = " + s);
+		}
+
+		public static void twoParam(String a, String b) {
+			System.out.println("a = " + a + ", b = " + b);
+		}
+	}
+
+	() -> staticMethod(); is equivalent to SampleClass::staticMethod
+	p -> oneParam(p) is equivalent to SampleClass::oneParam
+	(k, v) -> twoParam(k, v) is equivalent to SampleClass::twoParam
+	
+Streams
+============
+	Sequence of elements supporting sequential and 	parallel aggregate operations
+	
+	It has operation methods (filter, forEach, map etc.) and terminal operations (count, collect etc.) where the stream ends
+	
+	Stream helps to do internal processing, runtime decides what to do with elements of stream
+	
+
+	
+	
+
+
+		
+	
