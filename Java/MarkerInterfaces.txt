@@ -1,0 +1,40 @@
+Marker Interfaces
+=======================
+	A marker interface is an interface that has no methods or constants inside it. It provides run-time type information about objects, so the compiler and JVM have additional information about the object.
+
+	A marker interface is also called a tagging interface.
+
+	Java has many built-in marker interfaces, such as Serializable, Cloneable, and Remote.
+
+	Let's take the example of the Cloneable interface. If we try to clone an object that doesn't implement this interface, the JVM throws a CloneNotSupportedException. Hence, the Cloneable marker interface is an indicator to the JVM that we can call the Object.clone() method.
+
+	In the same way, when calling the ObjectOutputStream.writeObject() method, the JVM checks if the object implements the Serializable marker interface. When it's not the case, a NotSerializableException is thrown. Therefore, the object isn't serialized to the output stream.
+
+
+	Marker Interfaces vs. Annotations
+	-------------------------------------
+		By introducing annotations, Java has provided us with an alternative to achieve the same results as the marker interfaces. Moreover, like marker interfaces, we can apply annotations to any class, and we can use them as indicators to perform certain actions.
+
+		Unlike annotations, interfaces allow us to take advantage of polymorphism. As a result, we can add additional restrictions to the marker interface.
+
+		For instance, let's add a restriction that only a Shape type can be removed from the database:
+
+		public interface Shape {
+			double getArea();
+			double getCircumference();
+		}
+		
+		In this case, our marker interface, let's call it DeletableShape, will look like the following:
+
+		public interface DeletableShape extends Shape {
+		}
+		
+		Then our class will implement the marker interface:
+
+		public class Rectangle implements DeletableShape {
+			// implementation details
+		}
+		
+		Therefore, all DeletableShape implementations are also Shape implementations. Obviously, we can't do that using annotations.
+
+		However, every design decision has trade-offs and polymorphism can be used as a counter-argument against marker interfaces. In our example, every class extending Rectangle will automatically implement DeletableShape.
