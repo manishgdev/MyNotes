@@ -100,6 +100,10 @@ JPA - Java Persistent API
 	
 	CrudRepository Interface
 		contains implementations for possible operations on database
+		
+		Adding Custom Query Methods
+			@Query("from Auction a join a.category c where c.name=:categoryName")
+			public Iterable<Auction> findByCategory(@Param("categoryName") String categoryName);
 	
 @Entity - javax.persistence
 	map class into a table
