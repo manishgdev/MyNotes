@@ -43,18 +43,188 @@ Spring and Some of its problems
 		Multiple Setup steps
 		Multiple Configuration steps
 		Multiple build and deploy steps
-		
-		
-@SpringBootApplication
-	starting point of the application
 	
+
 SpringApplication.run(CourseApiApp.class, args); - creates the servlet container and runs it
 	- sets up default configuration
 	- starts Spring application context
 	- Performs class path scan
-	- Start Tomcat server
+	- Start Tomcat server	
+
+Why we should not return List of Objects from API ?
+	If we return list of object from an endpoint then we can run into below two problems :
+	1. If we need to return an object from same endpoint in future, all the consumers of the endpoint will have to change their code
+	
+	2. At the time of un-marshalling (decoding it back to object) it becomes difficult to specify the class that we are decoding into
+
+Spring Cloud uses Client side Service Discovery
+Eureka
+	- Service Discovery
+	- Netflix Open source
+
+@LoadBalanced
+	- does the service discovery in a load balanced way
+	- org.springframework.cloud.client.loadbalancer.LoadBalanced
+	- searches for the microservice based on url hint
+	
+	@Bean
+	@LoadBalanced
+	public RestTemplate getRestTemplate() {
+		return new RestTemplate();
+	}
+	
+	for getting instances programatically we can use DiscoveryClient interface
+	
+	@Autowired
+	private DiscoveryClient dc;
+	
+	List<ServiceInstance>	getInstances(String serviceId)
+	List<String>	        getServices()
+	String	                description()
+
+RestTemplate
+	RestTemplate restTemplate = new RestTemplate();
+	Movie movie = restTemplate.getForObject("http://localhost:8087/movies/" + rating.getMovieId(), Movie.class);
+	
+	here the restTemplate is taking the JSON response from the URL and mapping it to Movies class, in this case the Movies class must have an empty constructor, because it will first initialize empty object and then populate fields
+	
+WebClient (RestTemplate is deprecated)
+	WebClient.Builder builder = WebClient.builder();
+
+	Movie movie = builder.build()
+						.get()
+						.uri("http://localhost:8087/movies/" + rating.getMovieId())
+						.retrieve()
+						.bodyToMono(Movie.class)
+						.block();
+
+
+@SpringBootApplication
+	starting point of the application
+	@Configuration, @EnableAutoConfiguration & @ComponentScan are clubbed into one annotation to form @SpringBootApplication
+	
+@Configuration
+	- org.springframework.context.annotation.Configuration
+	@Configuration annotation on top of any class to declare that this class provides one or more @Bean methods and may be processed by the Spring container to generate bean definitions and service requests for those beans at runtime.
+
+	@Configuration
+	public class SimpleConfiguration {
+		
+		//	@Autowired
+		//	private MyBean mBean;   // if we don't want to use @Configuration we can use @Autowired for Object creation
+		
+		@Bean(name="myBeanM")
+		public MyBean getMyBean() {
+			return new MyBean();
+		}
+		
+		@Bean
+		public MyBeanConsumer getMyConsumerBean() {
+			return new MyBeanConsumer(getMyBean());
+		}
+	}
+	
+@Component (StereoType Annotation)
+	- @Component is the most generic Spring annotation. A Java class decorated with @Component is found during classpath scanning and registered in the context as a Spring bean. @Service, @Repository, and @Controller are specializations of @Component, which are used for more specific cases.
+
+	- @ComponentScan ensures that the classes decorated with @Component are found and registered as Spring beans. @ComponentScan is automatically included with @SpringBootApplication.
+	
+@Bean 
+	@Bean annotation tells that a method produces a bean to be managed by the Spring container. It is a method-level annotation. During Java configuration (@Configuration), the method is executed and its return value is registered as a bean within a BeanFactory.
+	
+@Component v/s @Configuration
+	@Configuration Indicates that a class declares one or more @Bean methods and may be processed by the Spring container to generate bean definitions and service requests for those beans at runtime
+
+	@Component Indicates that an annotated class is a "component". Such classes are considered as candidates for auto-detection when using annotation-based configuration and classpath scanning.
+
+	@Configuration is meta-annotated with @Component, therefore @Configuration classes are candidates for component scanning
+
+@PropertySource
+	org.springframework.context.annotation.PropertySource
+	- defines the path for the property file to look at 
+	- used for classes where parameters are fetched from property file using @Value annotation
+	
+@Value
+	- org.springframework.beans.factory.annotation.Value
+	- Spring Bean factory annotation
+	
+	students.List=Manish,Pratish,Sachin
+	students.ageMap={Manish:'20', Pratish:'18', Sachin:'15'}
+	students.state=Uttar Pradesh
+	
+	@Value("${students.List}") // interprets the comma separated values and returns String[]
+	private String[] studentsArr;
+	
+	@Value("#{${students.ageMap}}")  // interprets the value for the key and returns hashmap
+	private HashMap<String, Integer> studentAgeMap;
+	
+	@Value("${students.state:No State}") // If key name is not found returns 'No State'
+	private String state;
+	
+	Using Spring Expression Language (SpEL)
+		@Value("#{systemProperties['priority']}")  // system property named priority,
+		@Value("#{systemProperties['unknown'] ?: 'some default'}")
+		
+		@Value("#{someBean.someValue}") // using value from bean named someBean
+		@Value("#{'${listOfValues}'.split(',')}") // same as getting comma-separated values into String[], but it will return List<String>
+		
+		In properties file if valuesMap={key1: '1', key2: '2', key3: '3'} is present
+		@Value("#{${valuesMap}}")
+		private Map<String, Integer> valuesMap;
+		
+		@Value("#{${valuesMap}.key1}") // value for specific key
+		private Integer valuesMapKey1; 
+		
+		@Value("#{${valuesMap}['unknownKey']}")  // for unknown not present in the hashmap returns null
+		private Integer unknownMapKey;
+		
+		@Value("#{${unknownMap : {key1: '1', key2: '2'}}}") // Initializing Unknown hashmap
+		private Map<String, Integer> unknownMap;
+
+		@Value("#{${valuesMap}['unknownKey'] ?: 5}")  // set default value for the key if not exists
+		private Integer unknownMapKeyWithDefaultValue;
+		
+		Filtering Values of HashMap
+		@Value("#{${valuesMap}.?[value>'1']}")
+		private Map<String, Integer> valuesMapFiltered;
+		
+		@Value("#{systemProperties}") // Inject all the SystemProperties into hashmap
+		private Map<String, String> systemPropertiesMap;
+		
+		
+		Constructor Injection
+			@Autowired
+			public PriorityProvider(@Value("${priority:normal}") String priority) {
+				this.priority = priority;
+			}
+		
+		Method Injection
+			@Autowired
+			public void setValues(@Value("#{'${listOfValues}'.split(',')}") List<String> values) {
+				this.values.addAll(values);
+			}
+
+@Bean 
+	@Bean servers a similar purpose as @Component. It is not autodetected. Methods decorated with @Bean produce a bean to be managed by the Spring container during configuration stage.
+	
+	- It is a producer
+
+@ComponentScan
+	By default spring searches for the component in child packages from where the application is started, if the component is not in the child package then we can use this annotation to scan the desired package as well
+	@ComponentScan("fully_qualified_package_name")
+	@ComponentScan({"", ""}) // comma-separated-base-packages
+	
+@Service - Business services - StereoType annotation	
+	Singleton classes in spring
+	
+@Autowired - Dependency Injection, It is Consumer
+
+@Controller - Marks the class as Spring Web MVC controller
 	
 @RestController - Controller SpringMVC
+	- Spring Web Annotation
+	- org.springframework.web.bind.annotation.RestController
+	- Combines the @Controller & @ResponseBody which eliminates the need of annotating every request handling method with @ResponseBody annotation
 	Java class marked with Annotation
 	Has info about
 		what URL access triggers it
@@ -76,10 +246,6 @@ SpringApplication.run(CourseApiApp.class, args); - creates the servlet container
 		
 @RequestBody
 	maps the JSON object to the Java Object provided JSON object has same keynames as present in Java Bean
-
-@ComponentScan
-	By default spring searches for the component in child packages from where the application is started, if the component is not in the child package then we can use this annotation to scan the desired package as well
-	@ComponentScan("fully_qualified_package_name")
 	
 End-Point Examples
 	GET	/topics Gets all topics
@@ -87,11 +253,6 @@ End-Point Examples
 	POST	/topics	Creates a new topics
 	PUT		/topics/id Updates a specific topics
 	DELETE	/topics/id Deletes a specific topics
-
-@Service - Business services - StereoType annotation	
-	Singleton classes in spring
-	
-@Autowired - Dependency Injection
 
 JPA - Java Persistent API
 	JPA is a way to use ORM
