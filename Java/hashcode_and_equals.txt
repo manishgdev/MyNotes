@@ -9,3 +9,5 @@ Car c4 = new Car("Maruti", 2020);
 
 c1 is equal to c2
 but if the hashcode method is not implemented properly then when these objects are added in HashSet or HashMap these will result in duplicate object present in collection
+
+If equals method returns true for two objects then the two objects should have same hashcode also

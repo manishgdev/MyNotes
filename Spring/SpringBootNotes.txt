@@ -219,6 +219,27 @@ WebClient (RestTemplate is deprecated)
 	
 @Autowired - Dependency Injection, It is Consumer
 
+@Qualifier
+	@Component("fooFormatter")
+	public class FooFormatter implements Formatter {
+		public String format() {
+			return "foo";
+		}
+	}
+	@Component("barFormatter")
+	public class BarFormatter implements Formatter {
+		public String format() {
+			return "bar";
+		}
+	}
+	
+	@Autowired
+    private Formatter formatter; // this will give error as two instances of Formatter created by Spring Bean factory
+	
+	@Autowired
+    @Qualifier("fooFormatter")
+    private Formatter formatter;
+
 @Controller - Marks the class as Spring Web MVC controller
 	
 @RestController - Controller SpringMVC

@@ -1,0 +1,54 @@
+Iterator v/s for-each
+============================
+https://www.codespeedy.com/iterator-vs-foreach-in-java/
+
+Iterator
+---------
+	- Iterator belongs to java.util package, which is an interface and also a cursor.
+	- Cursors are used to retrieve elements from Collection type of object in Java.
+	- Iterator is recognized as Universal Java Cursor because supports all types of Collection classes.
+	- It is unidirectional (forward direction).
+	- Methods list.iterator(), hasNext() and next().
+	- hasNext() method checks whether the elements are present inside  a Collection object or not. Its return type is boolean.
+	
+For-each
+----------
+	- For each loop is also used for iteration of elements.
+	- For-each loop implicitly creates an iterator but it is not exposed to the user thus we can’t modify the items in the collections.
+	- For each loop brings different type of way for iteration of elements from Collection type of object or from an array.
+	- For each loop achieves iteration of the elements by executing every element one at a time sequentially.
+
+Difference between Iterator & for each loop :
+--------------------------------------------------
+	- While utilizing for each loop, size check is not necessary. But while utilizing iterator, hasNext() has to be used correctly or "NoSuchElementException" occurs.
+	- While utilizing for each loop "ConcurrentModificationException" can occur, if the given object gets changed or altered. But while utilizing iterator, that will be not a issue.
+	
+	
+	List<String> testList = new ArrayList<String>(Arrays.asList("Apple", "Banana", "Cherry", "Date Fruit", "Elderberries", "Figs", "Grapes", "Honeydew Melon"));
+		
+	System.out.println("Using for each");
+	for(String test : testList) {
+		System.out.print(test + ", ");
+		
+		// Below statements will give Exception in thread "main" java.util.ConcurrentModificationException
+		/*if(test.equals("Cherry"))
+			testList.remove("Cherry");*/
+	}
+	System.out.println();
+	
+	System.out.println("\nUsing Iterator");
+	Iterator<String> itr = testList.iterator();
+	while(itr.hasNext()) {
+		String fruit = itr.next();
+		System.out.print(fruit + ", ");
+		if(fruit.equals("Cherry"))
+			itr.remove();
+	}
+	System.out.println();
+	System.out.println("\nDifferent form of Iterator");
+	for(Iterator<String> itr2 = testList.iterator(); itr2.hasNext();) {
+		System.out.print(itr2.next() + ", ");
+	}
+	System.out.println();
+	// Below statement will throw Exception in thread "main" java.util.NoSuchElementException
+	// itr.next();
