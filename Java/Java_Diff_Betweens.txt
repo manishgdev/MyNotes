@@ -1,0 +1,388 @@
+=========================================================
+NoClassDefFoundError vs ClassNotFoundException
+==========================================================
+	NoClassDefFoundError
+	=============================
+		- It is Unchecked Exception
+
+		- For the Hardcoded class names which get compiled and are not available at the run time then the NoClassDefFoundError comes
+
+		ex :- Test t = new Test();
+
+		now at runtime for the command :
+		java Test
+		if the Test.class file is not present in the location then the NoClassDefFoundError comes
+
+	ClassNotFoundException
+	============================
+		- It is a Checked Exception
+
+		- For dynamically provided class names if the classfile is not found in the classpath then the ClassNotFoundException is thrown at the Runtime
+
+		Object o = Class.forName("XYZClass").newInstance();
+
+		now at Runtime if the XYZClass is not found in the Classpath then the ClassNotFoundException will be thrown.
+
+====================================================
+instanceof vs isInstance()
+====================================================
+	instanceof
+	=============
+		- operator / keyword
+		- to check whether the given object is particular type or not
+		Thread t = new Thread();
+		if(t instanceOf Runnable)
+			System.out.println("true");
+
+	isInstance()
+	==============
+		- method
+		- If the class type is available dynamically at Runtime then the instanceof cannot be used
+		Thread t = new Thread();
+		if(Class.forName(args[0]).isInstance(t))
+			System.out.println("true");
+		else
+			System.out.println("false");
+
+======================================================
+Checked Exception vs Unchecked Exception
+======================================================
+	Note :- 
+	- Whether the exception is CheckedException or UncheckedException it will occur only at Runtime. There is no chance of occurring any exception at compile time
+	Checked Exception
+	- Errors are caused due to lack of system resources - so Errors are Unchecked Exceptions
+	- RunTimeException and child exceptions are Unchecked Exceptions
+	- Other exceptions excluding RuntimeExceptiona and Errors are Checked Exceptions
+
+	Throwable
+		- Exception
+			- RuntimeException
+				- NullPointerException
+				- ArrayIndexOutOfBoundException
+				- ArithmaticException
+				- .....
+			- IOException
+				- FileNotFoundException
+				- EOFException
+				- ....
+			- InturreptedException
+			- ....
+		- Error
+			- VMError
+				- OutOfMemoryError
+				- StackoverflowError
+				- .....
+			- 	LinkageError
+				- VerifyError
+				- ....
+			- .....
+	Checked Exception
+	=====================
+	- Checked by the compiler whether the program is handling them or not for smooth execution of the program at runtime
+	- FileNotFoundException, ClassNotFoundException, IOException
+
+	Unchecked Exception
+	=====================
+	- Compiler doesnot checks for these exception if they are handled by the program or not
+	- ArithmaticException, NullPointerException, ArrayIndexOutOfBoundException
+
+==================================================
+final, finally, finalize
+==================================================
+	final
+	=====================
+		- modifier applicable for methods, classes and variables
+		- final variable cannot be modified, method cannot be overriden and class cannot be extended
+
+	finally
+	=====================
+		- block always associated with try-catch block to maintain clean up code	
+
+		try{
+			// Risky code
+		}
+		catch(Exception e) {
+			// Handling Code
+		}
+		finally{
+			// Clean up code
+		}
+
+	finalize
+	=====================
+		- method present in Object class
+		- terminology applicable for garbage collection
+		- Called when Garbage Collection finds any object value to be null
+		protected void finalize() throws Throwable {
+			super.finalize();
+			// perform clean up
+		}
+
+==============================================
+Object and Upcasted Object
+==============================================
+	List (Interface)
+		- ArrayList
+		- LinkedList
+		- Vector
+			-Stack
+	Approach 1 :- Child p = new Child();
+	===========================================================
+	- If exact Runtime type of Object is known then this is useful, ex:- getting values from a Generic List
+	- All methods present in the same and the Parent class can be called
+	- we can use child reference to hold only for that particular child class object only
+
+	Approach 2 :- Parent c = new Child(); Parent Reference
+	============================================================
+	- If we don't know exact Runtime type of the Object than we can handle the object by parent reference, ex:- Getting values from a non-generic list and polymorphism
+	parent can hold any type of child object
+	List l = method();
+
+	public List method() {
+		if(condition1)
+			return ArrayList;
+		if(condition2)
+			return LinkedList;
+		if(condition3)
+			return vector;
+	}
+	- Only the methods present in Parent class which are overwritten in Child class are visible and the other child class methods cannot be called otherwise compiler will give error as "error: cannot find symbol"
+	- we can use parent reference to hold any child class object
+
+========================================================================
+Access Specifier vs Access Modifier
+========================================================================
+	- In old languages like C++ public, private, protected and default are considered as Access Specifiers
+	Access Specifier
+	- Default modifiers allowed for top-level class :- public, default, final, abstract, strictfp
+	========================
+		- In java there is no concept of Access Specifiers, instead there are Access Modifiers (public, private, protected and default) and Non-Access Modifiers (static, final, abstract, synchronized, native, transient, volatile, strictfp)
+	
+	Access Modifier
+	========================
+		- public, protected, default and private
+		- if any other modifier other than public, default, final, abstract, strictfp is used for top-level class then the compiler gives error as 
+	"modifier modifier_name not allowed here"
+
+=======================================================================
+String, StringBuffer and StringBuilder
+=======================================================================
+	String
+	=========================
+		- Immutable
+
+	StringBuffer
+	=========================
+		- Mutable
+		- introduced in v1.0
+		- every method is synchronized - Thread Safety
+		- performance wise low and Thread safety
+
+	StringBuilder
+	=========================
+		- Mutable
+		- introduced after v1.5
+		- methods are non-synchronized - Thread safety is not there
+		- performance wise recommended but doesnot guarantees Thread Safety
+
+=======================================================================
+== vs equals
+=======================================================================
+	String a = new String("abc");
+	String b = new String("abc");
+	String c = a;
+	String d = "abc";
+
+	==
+	========================================
+		- meant for reference comparision / address comparision
+		- a == b false, a == c true, a == d false
+
+	equals
+	========================================
+	- meant for content comparision
+	- a.equals(b) true, a.equals(c) true, a.equals(d) true
+
+=======================================================================
+Comparable vs Comparator
+=======================================================================
+	Comparable
+	=====================
+	- Default natural sorting order
+	- java.lang package
+	- only contains compareTo method with only one parameter
+	- All wrapper classes and String class implements Comparable
+
+	Comparator
+	=====================
+	- Customized Sorting order
+	- java.util package
+	- contains compareTo (with two parameters) and equals method
+	- only implemented by Collator and RuleBasedCollator classes
+	List<Object> objList = findObj(name);
+	   Collections.sort(objList, new Comparator<Object>() {
+		   @Override
+		   public int compare(Object a1, Object a2) {
+			   return a1.getType().compareToIgnoreCase(a2.getType());
+		   }
+	   });
+
+	- class should implement Comparator interface
+	such as :-
+	import java.util.Comparator;
+	import java.lang.Comparable;
+	public class Employee implements Comparable<Employee> {
+		public static final Comparator<Employee> SalaryComparator = new Comparator<Employee>(){
+
+			@Override
+			public int compare(Employee o1, Employee o2) {
+				return o1.salary - o2.salary; // salary is also positive integer
+			}
+		  
+		};
+		
+		// Natural Sorting of Employees
+		@Override
+		public int compareTo(Employee o) {
+			return this.id - o.id;
+		}
+	}
+
+	use the above declared comparator as :- Collections.sort(listOfEmployees, Employee.SalaryComparator);
+	for Natural Sorting of Employeess :- Collections.sort(listOfEmployees); 
+========================================================================
+enum & Enumeration
+========================================================================
+	enum
+	===========================
+	An enum type is a special data type that enables for a variable to be a set of predefined constants. The variable must be equal to one of the values that have been predefined for it.
+
+	Enumeration
+	===========================
+	Enumeration is an interface : An object that implements the Enumeration interface generates a series of elements, one at a time. Successive calls to the nextElement method return successive elements of the series.
+
+========================================================================
+Enumeration & Iterator
+========================================================================
+	Enumeration
+	============================
+	- Part of Java Data Structures
+	- available in java.util
+	- methods :- hasMoreElements(), nextElement()
+	- concurrent removal of element while navigating through the Enumeration is not possible
+	- Concurrent addition of elements possible for Vectors while iterating
+
+	Iterator
+	============================
+	- Part of Java Collections
+	- available in java.util
+	- methods :- hasNext(), next(), remove()
+	- concurrent removal of elements while iterating through is possible by Iterator's remove() method
+	- Concurrent addition is not possible
+
+========================================================================
+List & Set
+========================================================================
+	List
+	=============================
+	- Ordered Collections and maintains the insertion order
+	- Allows duplicate values
+	- List Implementations :- ArrayList, LinkedList
+	- Allows any number of null values
+	- ListIterator can be used to traverse a List in both the directions(forward and backward)
+	- List interface has one Legacy Class called Vector
+
+	Set
+	=============================
+	- Unordered Collections and does not maintains the insertion order
+	- Does not allows duplicate values
+	- Sets implementation :- HashSet, LinkedHashSet, TreeSet
+	- Allows only single null value
+	- ListIterator can not be used to traverse a Set, instead Iterator can be used
+	- Set interface does not has any Legacy Class.
+
+========================================================================
+LinkedList, ArrayList & Vector
+========================================================================
+	- They all implement List interface. They are very similar to use. 
+	- Their main difference is their implementation which causes different performance for different operations
+	
+	LinkedList
+	===========
+		- is implemented as a double linked list.
+		- Its performance on add and remove is better than Arraylist, but worse on get and set methods
+		
+	ArrayList
+	===========
+		- is implemented as a resizable array
+		- As more elements are added to ArrayList, its size is increased dynamically. 
+		- It's elements can be accessed directly by using the get and set methods, since ArrayList is essentially an array
+		- The default initial capacity of an ArrayList is pretty small. 
+		- It is a good habit to construct the ArrayList with a higher initial capacity. This can avoid the resizing cost.
+		
+	Vector
+	===========
+		- is similar with ArrayList, but it is synchronized
+		
+	Vector and ArrayList require space as more elements are added. 
+	Vector each time doubles its array size, while ArrayList grow 50% of its size each time.
+	LinkedList, however, also implements Queue interface which adds more methods than ArrayList and Vector, such as offer(), peek(), poll(), etc
+	
+========================================================================
+JDK, JRE and JVM
+========================================================================
+	JDK
+	======================
+		- Provides environment to develop and run Java applications
+		- JDK = JRE + Development Tools
+
+	JRE
+	======================
+		- provides environment only to run the Java applications
+		- JRE = JVM + Library classes
+
+	JVM (interpreter)
+	======================
+		- responsible for execution of Java program line by line
+
+========================================================================
+System.out.println();
+========================================================================
+	System class :- java.lang.System
+	out :- static variable of type PrintStream in System class
+	println() :- method present in PrintStream class
+
+========================================================================
+List vs AbstractList
+========================================================================
+	ArrayList
+	-----------
+		- It is present in the java.util package and provides us dynamic arrays in Java. 
+		- It may be slower than standard arrays but can be helpful in programs where lots of manipulation in the array is needed. 
+		- We can dynamically add and remove items. It automatically resizes itself.
+
+		- This class uses a dynamic array to store the elements in it. With the introduction of generics, this class supports the storage of all types of objects.
+		- Manipulating ArrayList takes more time due to the internal implementation. Whenever we remove an element, internally, the array is traversed and the memory bits are shifted.
+		- This class implements a List interface. Therefore, this acts as a list.
+		- This class works better when the application demands storing the data and accessing it.
+
+	LinkedList
+	------------
+		- Linked List are linear data structures where the elements are not stored in contiguous locations and every element is a separate object with a data part and address part. 
+		- The elements are linked using pointers and addresses. Each element is known as a node. 
+		- Due to the dynamicity and ease of insertions and deletions, they are preferred over the arrays.
+		
+		- This class uses a doubly linked list to store the elements in it. Similar to the ArrayList, this class also supports the storage of all types of objects.
+		- Manipulating LinkedList takes less time compared to ArrayList because, in a doubly-linked list, there is no concept of shifting the memory bits. The list is traversed and the reference link is changed.
+		- This class implements both the List interface and the Deque interface. Therefore, it can act as a list and a deque.
+		- This class works better when the application demands manipulation of the stored data.
+	
+	
+========================================================================
+AWT vs SWING
+========================================================================
+
+========================================================================
+Advantages and Disadvantages of static
+========================================================================
+

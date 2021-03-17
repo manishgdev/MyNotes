@@ -1,0 +1,335 @@
+1. When Singleton is not Singleton in Java?
+=============================================
+	below are some of them scenario when your Singleton doesn't behave like.
+		1. Multiple Singletons in Two or More Virtual Machines
+		2. Multiple Singletons Simultaneously Loaded by Different Class Loaders
+		3. Singleton Classes Destroyed by Garbage Collection, then Reloaded
+		4. Purposely Reloaded Singleton Classes
+		5. Copies of a Singleton Object that has Undergone Serialization and Deserialization or Cloning
+			To avoid from Cloning, throw new CloneNotSupportedException() from the clone() methods
+			To avoid from Serialization/Deserialization implement readResolve() method
+				protected Object readResolve() 
+				{ 
+					return instance; 
+				} 
+		6. Invoking constructor using Reflection
+			Use Enum, but its only drawback is that it is not flexible i.e it does not allow lazy initialization.
+			
+			As enums don’t have any constructor so it is not possible for Reflection to utilize it. Enums have their by-default constructor, we can’t invoke them by ourself. JVM handles the creation and invocation of enum constructors internally. As enums don’t give their constructor definition to the program, it is not possible for us to access them by Reflection also. Hence, reflection can’t break singleton property in case of enums.
+		
+2. Why Private top level class in java not allowed?
+=====================================================
+	- private access specifier restricts the access of variables/methods inside the package and outside the package to only the sub-classes
+	- If class is declared protected, then it will be visible inside the package and for it to be visible outside the package the inheritance will be required but in java there is no such concept of package inheritance, because of which the class will not be visible outside the package and it will be as good as 'default' specifier, that's why protected is not allowed for top level class
+	
+3. Call static object/method using null object
+====================================================
+	class ABC {
+		static void test() {
+		
+		}
+	
+		public static void main(String args[]) {
+			ABC a = null;
+			
+			a.test(); // this will execute the test method
+		}
+	}
+	
+	Static members belongs to the class rather than instance. So at compile time, a.test() is converted to ABC.test()
+
+4. Covariant Return type
+===========================
+	- Change the return type of overridden method in such a way that the return type is a Non-Primitive type and 
+		is subclass to that of defined in parent's return type
+		
+		class A {
+			A get() {
+				return this;
+			}
+			
+			Number getNum() {
+				return 10;
+			}
+		}
+		
+		class B extends A {
+			B get() {
+				return this;
+			}
+			
+			Integer getNum() {
+				return 20;
+			}
+		}
+		
+		Class B extends Class A and is overriding the get() and getNum() methods of Class A 
+		with their return types as B and Integers respectively which are child classes of A and Number respectively.
+	
+5. Nested Classes / Interfaces
+=================================
+	Nested interface must be public if it is declared inside the interface. (Nested Interface can only be public, even if it is defined default it will be converted to public)
+	It can have any access modifier if declared within the class.
+	Nested interfaces are declared static implicitely.
+
+6. Instance Initializer Block & Static Block
+============================================
+	class A {
+		{
+			// some code here
+		}
+		
+		public A() {
+		
+			// constructor code
+		}
+		
+		public A(int a) {
+			//constructor code
+		}
+	}
+	
+	Now every time an instance of Class A is created the Initializer block will be copied inside the constructor after the super call
+
+	Object Creation -> Constructor Invoked -> super() called -> Initializer block executed -> Constructor code executed
+	
+	Static Block
+	--------------
+	class A {
+		static int a;
+		static {
+			a = 10;
+		}
+		public A() {
+		}
+	}
+	- Is used to initialize the static data member.
+	- It is executed before the main method at the time of classloading.
+	
+7. Blank Final Variable
+===================================
+	- Blank final variable can only be initialized either in Initializer block or the Constructor
+	- if there is blank final variable then it has to be initialized in all of the Constructors of the class
+	
+	Static blank final variable
+	---------------------------
+	A static final variable that is not initialized at the time of declaration is known as static blank final variable. 
+	It can be initialized only in static block.
+
+8. super() call
+===================================
+	class Parent {
+		Parent() {
+			Syso("Parent Simple Constructor called");
+		}
+		Parent(int n) {
+			Syso("Parent Single Parameter constructor called");
+		}
+	}
+	
+	class Child extends Parent {
+		Child() {
+			// here super() will be called by default
+			Syso("Child Constructor called");
+		}
+		Child(int n){
+			// here also super() will be called by default 
+			// to call the Parent's single parameter constructor we'll have to call super(n)
+			Syso("Child single parameter constructor called");
+		}
+	}
+	
+9. Abstact & Interfaces
+======================================
+	Abstract
+	----------
+	- Abstract class is a class declared with abstract keyword, it may or maynot have abstract method.
+	- If a class contains abstract method then the class also needs to be defined with abstract keyword.
+	- An abstract class may have static fields and static methods
+	- When an abstract class is subclassed, the subclass usually provides implementations for all of the abstract methods in its parent clas
+	- If the subclass doesnot provides implementation for any of the abstract method then the subclass also needs to be defined abstract
+	
+	https://stackoverflow.com/questions/3344816/when-and-why-to-use-abstract-classes-methods#answer-3344874
+	When to use Abstract
+	---------------------------
+		- We want to share code among several closely related classes.
+		- Abstract Classes are a good fit if we want to provide implementation details to our children but don't want to allow an instance of our class to be directly instantiated (which allows us to partially define a class).
+		- Not only we can define a template for children, 
+		but Abstract Classes offer the added benefit of letting us define functionality that our child classes can utilize later.
+		
+	Interface
+	-----------
+	- Interface is just the declaration of methods of an Object, it’s not the implementation
+	- In an interface, we define what kind of operation an object can perform
+	- The java compiler adds 
+		- public and abstract keywords before the interface method and 
+		- public, static and final keywords before data members.
+	Imp :- Interfaces form a contract between the class and the outside world, 
+			and this contract is enforced at build time by the compiler
+			
+	When to use Interface
+	-----------------------------
+	- We want to specify the behavior of a particular data type, but not concerned about who implements its behavior.
+	- want to take advantage of multiple inheritances.
+		eg) the interfaces Comparable and Cloneable are implemented by many unrelated classes.
+	- We expect that unrelated classes would implement your interface. 
+	
+10. Singleton class
+===========================
+	class Single {
+		private Single obj;
+		
+		private Single() {
+		
+		}
+		
+		// some methods here
+		
+		public static Single getInstance() {
+			if(obj == null)
+				obj = new Single();
+			return obj;
+		}
+	}
+	
+11. array.length vs arraylist.size()
+====================================
+	- array.length gives actual size of the array, ArrayList#size() returns number of elements that were assigned value
+	
+12. ArrayList from array and vice-a-versa
+==========================================
+	Arrays to ArrayList
+	----------------------
+		- Arrays.asList(arr)
+		- new ArrayList(Arrays.asList(arr))
+		- list.addAll(Arrays.asList(arr))
+		- Collections.addAll(list, arr)
+		
+	ArrayList to Array
+	----------------------
+		toArray
+			- Object[] objectArray = set.toArray();
+			- Integer[] integerArray = set.toArray(new Integer[0]);
+			- Integer[] integerArray = set.toArray(new Integer[4]);  
+			- Java 8
+				String[] strings = list.stream().toArray(String[]::new);
+			
+			In above examples Object[] toArray() uses vectorized arraycopy, which is much faster than the type checked arraycopy used in T[] toArray(T[] a).
+			
+			T[] toArray(new T[non-zero-size]) needs to zero the array, while T[] toArray(new T[0])does not. Such avoidance makes the latter call faster than the former.
+		
+13. Copying Arrays
+=================================
+	- Using loops
+	- Object.clone() - it performs shallow copy, i.e. it returns a reference to a new array which references the same elements as the source array.
+	- Arrays.copyOf()
+		int[] a = {4, 1, 3, 2};
+		int[] b = Arrays.copyOf(a, a.length); // [4, 1, 3, 2]
+		
+		Double[] doubles = { 1.0, 2.0, 3.0 };
+		Number[] numbers = Arrays.copyOf(doubles, doubles.length, Number[].class); // type is changed
+	- System.arraycopy()
+		public static void arraycopy(Object src, int srcPos, Object dest, int destPos, int length)
+		int[] a = { 4, 1, 3, 2 };
+		int[] b = new int[a.length];
+		int[] c = new int[2];
+		System.arraycopy(a, 0, b, 0, a.length); // [4, 1, 3, 2]
+		System.arraycopy(a, 1, b, 0, 2);  // [1, 3]
+	- Arrays.copyOfRange()
+		int[] a = { 4, 1, 3, 2 };
+		int[] b = Arrays.copyOfRange(a, 0, a.length); // [4, 1, 3, 2]
+		
+14. Sorting Array
+=================================
+	String[] names = {"John", "Steve", "Shane", "Adam", "Ben"};
+	Arrays.sort(names);  // ascending order
+	
+
+	Arrays.sort(names, 0, names.length, Collections.reverseOrder()); // descending order
+	
+	Course[] courses = new Course[4];
+	courses[0] = new Course(101, "Java", 200);
+	courses[1] = new Course(201, "Ruby", 300);
+	courses[2] = new Course(301, "Python", 400);
+	courses[3] = new Course(401, "Scala", 500);
+	
+	Arrays.sort(courses, new Course.PriceComparator()); // sorting an object array
+	
+	public static <T> void sort(T[] a,
+                            int fromIndex,
+                            int toIndex,
+                            Comparator<? super T> c)
+							
+15. Exception Handling
+=================================
+Exception Hierarchy
+Throwable :-
+		- Errors - OutOfMemoryError and StackOverflowError
+		- Exceptions
+			- Checked / Compile Time Exceptions - (IOException, ParseExcetion)
+			- Unchecked / Runtime Exceptions - (FileNotFoundException, ArithmaticException, ArrayIndexOutOfBoundException)
+			
+
+17. try-with-resources
+===================
+	- we can create a resource in the try statement itself and use it inside the try-catch block. When the execution comes out of try-catch block, runtime environment automatically close these resources.
+		try (MyResource mr = new MyResource()) {
+			System.out.println("MyResource created in try-with-resources");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	Best Practices :-
+	1. Use most specific exception first
+	2. Throw Early or Fail Fast :- while doing any file operation or operation on Array, we check before performing the operation if the 
+					input parameter is Null or not and in-case of Arrays we can check if the Index exists in the Array or not.
+	3. Catch Late :- throws keyword in the Method Signature
+	4. Closing the resources :- by with try-with-resources
+	5. Logging the Exception
+	6. Single catch for multiple exceptions
+	7. Using Custom Exceptions
+	8. Naming Conventions and packaging
+	9. Use Exceptions Judiciously :- if the exception is optional and we can get the program to work we can do it using simple boolean return variable
+	10. Document the Exceptions :- Use javadoc @throws to clearly specify the exceptions thrown by the method,
+
+18. Association, Aggregation & Composition
+===========================================
+	Association
+	-------------
+	- Association is relation between two separate classes which establishes through their Objects. Association can be one-to-one, one-to-many, many-to-one, many-to-many.
+	- In Object-Oriented programming, an Object communicates to other Object to use functionality and services provided by that object. Composition and Aggregation are the two forms of association.
+	- relationship where all object have their own lifecycle and there is no owner
+	- Student - Teacher relationship
+	Both can create and delete independently
+	
+	Aggregation (Has-a)
+	--------------------
+	- Aggregation is a specialize form of Association 
+	- It is a unidirectional association i.e. a one way relationship. For example, department can have students but vice versa is not possible and thus unidirectional in nature.
+	- In Aggregation, both the entries can survive individually which means ending one entity will not effect the other entity, all object have their own lifecycle but there is ownership and child object cannot belongs to another parent object.
+	- Student - Address relationship
+	- Student getting shifted to other address, previous address can be used by some other student
+		
+		class Student 
+			Address address;
+			
+	Composition (part-of)
+	----------------------
+	- Composition is a restricted form of Aggregation in which two entities are highly dependent on each other.
+	- It represents "part-of" relationship.
+	- In composition, both the entities are dependent on each other.
+	- When there is a composition between two entities, the composed object cannot exist without the other entity.
+	- Composition is again specialize form of Aggregation and we can call this as a "death" relationship
+	- strong type of Aggregation
+	- Child object does not have their lifecycle and if parent object is deleted all child object will also be deleted
+	- House - Room relationship
+	- House is destroyed, then room will also be destroyed
+	
+		class Library
+			private List<Books> bookList;
+	
+	Aggregation vs Composition
+	*****************************
+		- Dependency: Aggregation implies a relationship where the child can exist independently of the parent. For example, Bank and Employee, delete the Bank and the Employee still exist. whereas Composition implies a relationship where the child cannot exist independent of the parent. Example: Human and heart, heart don’t exist separate to a Human
+		- Type of Relationship: Aggregation relation is “has-a” and composition is “part-of” relation.
+		- Type of association: Composition is a strong Association whereas Aggregation is a weak Association.

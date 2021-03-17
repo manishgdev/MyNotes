@@ -1,0 +1,141 @@
+JDBC
+===============
+- Register the driver class
+	Class.forName("com.mysql.jdbc.Driver");  
+- Create connection
+	Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/sonoo","root","root");  
+- Create statement object
+	Statement stmnt = con.createStatement();
+- Executing queries using the Statement object
+	ResultSet rs=stmnt.executeQuery("select * from emp");  
+    while(rs.next()){  
+		System.out.println(rs.getInt(1)+" "+rs.getString(2));  
+	}  
+	
+- Fetching ColumnNames from the ResultSet :-
+	ResultSetMetaData rsMetaData = rs.getMetaData();
+    int numberOfColumns = rsMetaData.getColumnCount();
+
+    // get the column names; column indexes start from 1
+    for (int i = 1; i <= numberOfColumns; i++) {
+      String columnName = rsMetaData.getColumnName(i);
+      String tableName = rsMetaData.getTableName(i);
+      System.out.println(columnName);
+      System.out.println(tableName);
+    }
+- Closing connection
+	con.close();
+	
+Prepared Statement
+======================
+- Register the driver class
+	Class.forName("oracle.jdbc.driver.OracleDriver");  
+- Create Connection
+	Connection con=DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","system","oracle");   
+- Create PreparedStatement Object
+	PreparedStatement stmt=con.prepareStatement("insert into Emp values(?,?)");  
+	stmt.setInt(1,101);//1 specifies the first parameter in the query  
+	stmt.setString(2,"Ratan");  
+- Execute Update with prepared statement object
+	int i=stmt.executeUpdate();  
+	System.out.println(i+" records inserted");  
+- Close the Connection
+	con.close();  
+
+
+==================================================================================================
+
+----
+SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
+String date = sdf.format(new Date());
+System.out.println(date); //15/10/2013
+
+----
+SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+String dateInString = "31-08-1982 10:20:56";
+Date date = sdf.parse(dateInString);
+System.out.println(date); //Tue Aug 31 10:20:56 SGT 1982
+
+----
+DateFormat dateFormat= new SimpleDateFormat("dd/MM/yyyy");
+
+Calendar c = Calendar.getInstance();    
+c.setTime(new Date());
+c.add(Calendar.DATE, 5);
+System.out.println(dateFormat.format(c.getTime()));
+
+==================================================================================================
+
+Log Levels
+	ALL < DEBUG < INFO < WARN < ERROR < FATAL < OFF
+
+Log4j Layouts
+	DateLayout
+	HTMLLayout
+	PatternLayout
+	SimpleLayout
+	XMLLayout
+
+# Define the root logger with appender file
+log = /usr/home/log4j
+log4j.rootLogger = DEBUG, FILE
+
+# Define the file appender
+log4j.appender.FILE=org.apache.log4j.FileAppender
+log4j.appender.FILE.File=${log}/log.out
+
+# Define the layout for file appender
+log4j.appender.FILE.layout=org.apache.log4j.PatternLayout
+log4j.appender.FILE.layout.conversionPattern=%m%n
+
+static Logger log = Logger.getLogger(log4jExample.class.getName());
+
+==================================================================================================Java generating a parameterless constructor when you don't have any other is like a polite waiter taking your coat for you.
+
+Java still generating a parameterless constructor after you define another version of it is like the same waiter 
+taking the coat off you after you gave a clear indication that you have your own plans of what to do with the coat.
+
+If I have a class (that I want to be immutable):
+
+class Person
+{
+    final String firstName;
+    final String lastName;
+And I add a constructor:
+
+    Person(String firstName, String lastName) 
+    {
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+}
+And Java was still to provide a default, parameterless constructor, then this code can't compile, because firstName and lastName fields are declared as final, yet they are not set after you call Person p = new Person().
+
+You are forcing me to provide another implementation:
+
+private Person() 
+{
+    this.firstName = null; // or "", or whatever
+    this.lastName = null;
+}
+And since I don't want it - as it's useless, I might feel inclined to put skull and crossbones on it:
+
+@Deprecated
+private Person() 
+{
+    // don't use this constructor! i don't want it to ever be called!
+    throw new RuntimeException("Illegal constructor called");
+}
+But I still can't forbid another developer to create a method (inside the Person class, so marking the constructor as private didn't help):
+
+public static Person createPerson()
+{
+    return new Person(); // this will blow in our face
+}
+All this fuss could be - and is - avoided thanks to the fact that Java (and not only Java) works the way it works.
+
+If you define a method setCoordinates(int x, int y), you don't expect compiler to automatically accept a parameterless version of it - setCoordinates(). It wouldn't do a thing.
+
+How is this different from expecting a parameterless constructor? Well, obviously, a constructor always does at least one thing - it creates an object (or dies trying).
+
+But I like to be in control of how I want my objects to be instantiated. Forcing me to have a parameterless constructor no matter what I do takes this control away from me.
