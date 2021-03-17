@@ -11,3 +11,28 @@ Bound Type
 WildCard
 	NumberFns<?>
 	
+Generic Method
+	<T> before the return type denotes that the method is generic method
+	
+	public static <T> void printMe(T[] xArr) {
+		for(T x : xArr)
+			System.out.printf("%s ", x);
+		System.out.println();
+	}
+	
+Generic method with return type
+	System.out.println(max(8, 10, 50));
+	System.out.println(max("Apple", "Appy", "Banana"));
+	
+	public static <T extends Comparable<T>> T max(T a, T b, T c) {
+		T max = a;
+
+		if (b.compareTo(a) > 0)
+			max = b;
+
+		if (c.compareTo(max) > 0)
+			max = c;
+
+		return max;
+	}
+	

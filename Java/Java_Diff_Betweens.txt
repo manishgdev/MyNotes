@@ -250,6 +250,7 @@ Comparable vs Comparator
 
 	use the above declared comparator as :- Collections.sort(listOfEmployees, Employee.SalaryComparator);
 	for Natural Sorting of Employeess :- Collections.sort(listOfEmployees); 
+	
 ========================================================================
 enum & Enumeration
 ========================================================================
@@ -285,21 +286,21 @@ List & Set
 ========================================================================
 	List
 	=============================
-	- Ordered Collections and maintains the insertion order
-	- Allows duplicate values
-	- List Implementations :- ArrayList, LinkedList
-	- Allows any number of null values
-	- ListIterator can be used to traverse a List in both the directions(forward and backward)
-	- List interface has one Legacy Class called Vector
+		- Ordered Collections and maintains the insertion order
+		- Allows duplicate values
+		- List Implementations :- ArrayList, LinkedList
+		- Allows any number of null values
+		- ListIterator can be used to traverse a List in both the directions(forward and backward)
+		- List interface has one Legacy Class called Vector
 
 	Set
 	=============================
-	- Unordered Collections and does not maintains the insertion order
-	- Does not allows duplicate values
-	- Sets implementation :- HashSet, LinkedHashSet, TreeSet
-	- Allows only single null value
-	- ListIterator can not be used to traverse a Set, instead Iterator can be used
-	- Set interface does not has any Legacy Class.
+		- Unordered Collections and does not maintains the insertion order
+		- Does not allows duplicate values
+		- Sets implementation :- HashSet, LinkedHashSet, TreeSet
+		- Allows only single null value
+		- ListIterator can not be used to traverse a Set, instead Iterator can be used
+		- Set interface does not has any Legacy Class.
 
 ========================================================================
 LinkedList, ArrayList & Vector
@@ -356,7 +357,7 @@ System.out.println();
 List vs AbstractList
 ========================================================================
 	ArrayList
-	-----------
+	=======================
 		- It is present in the java.util package and provides us dynamic arrays in Java. 
 		- It may be slower than standard arrays but can be helpful in programs where lots of manipulation in the array is needed. 
 		- We can dynamically add and remove items. It automatically resizes itself.
@@ -367,7 +368,7 @@ List vs AbstractList
 		- This class works better when the application demands storing the data and accessing it.
 
 	LinkedList
-	------------
+	=======================
 		- Linked List are linear data structures where the elements are not stored in contiguous locations and every element is a separate object with a data part and address part. 
 		- The elements are linked using pointers and addresses. Each element is known as a node. 
 		- Due to the dynamicity and ease of insertions and deletions, they are preferred over the arrays.

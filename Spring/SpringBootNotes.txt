@@ -15,8 +15,8 @@ Spring Boot
 	Spring Boot makes it easy to create stand-alone, production-grade Spring based application that you can just run
 	
 	Opinionated
-	Convention over configuration (for majority of requirements no configuration will be required)
-	Stand alone application (has server i.e. the container to run the application, no need to deploy application on server)
+		Convention over configuration (for majority of requirements no configuration will be required)
+		Stand alone application (has server i.e. the container to run the application, no need to deploy application on server)
 	Production ready
 	
 	Preset combination of JARs and dependencies that work together well is provided by Spring Boot and is known as "Bill of Materials"
