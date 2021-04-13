@@ -128,9 +128,9 @@ Object and Upcasted Object
 			-Stack
 	Approach 1 :- Child p = new Child();
 	===========================================================
-	- If exact Runtime type of Object is known then this is useful, ex:- getting values from a Generic List
-	- All methods present in the same and the Parent class can be called
-	- we can use child reference to hold only for that particular child class object only
+		- If exact Runtime type of Object is known then this is useful, ex:- getting values from a Generic List
+		- All methods present in the same and the Parent class can be called
+		- we can use child reference to hold only for that particular child class object only
 
 	Approach 2 :- Parent c = new Child(); Parent Reference
 	============================================================
