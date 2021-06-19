@@ -1,0 +1,50 @@
+var, let & const
+
+var we can re-assign & re-declare variables, which is not allowed in let and const
+
+var - re-declare & re-assign
+let - re-assign
+const - neither re-assign nor re-assign
+	var nameVar="Manish";
+	nameVar = "XYZ";
+	var nameVar = "Piyush";
+	console.log('nameVar : ', nameVar)
+
+	let nameLet = "Romeo"
+	nameLet = "Juliet"
+	// let nameLet = "xyz" // babel will crash
+	console.log("nameLet :- ", nameLet)
+
+	const nameConst = "Frank";
+	// nameConst = "Gunther" // not allowed
+	// const nameConst = "XYZ" // not allowedvar a
+
+	console.log("nameConst :- ", nameConst)
+
+
+var, let & const all are function scoped, not visible outside the function where it is scoped
+	function getPetName() {
+		var petName = "JoJo";
+		return petName;
+	}
+
+	console.log(petName); // not visible
+	
+	- var is method level scope
+		var fullName = "Manish Singh";
+		if(fullName) {
+			var firstName = fullName.split(" ") [0];
+			console.log("FirstName in Block :- ", firstName)
+		}
+		console.log("FirstName outside Block :- ", firstName);
+	
+	- scope for firstName is same as fullName
+
+	- let and const are block level scoped
+		const fullName = "Manish Singh";
+		if(fullName) {
+			let firstName = fullName.split(" ") [0];
+			console.log("FirstName in Block :- ", firstName)
+		}
+		console.log("FirstName outside Block :- ", firstName); // will give undefined
+	

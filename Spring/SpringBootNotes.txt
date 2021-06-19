@@ -295,9 +295,38 @@ JPA - Java Persistent API
 	
 @ManyToOne 
 	establish many-to-one relationship
-	
-	
 
+Spring Boot Autowiring a Component/Bean in non-Spring managed class will give null
+=======================================================================================
+	https://stackoverflow.com/questions/18347518/spring-autowiring-not-working-from-a-non-spring-managed-class		
+	
+	Context Utils Class (implements ApplicationContextAware)
+	========================================================
+	import org.springframework.context.ApplicationContext;
+	import org.springframework.context.ApplicationContextAware;
+	import org.springframework.stereotype.Component;
+
+	@Component
+	public class ApplicationContextUtils implements ApplicationContextAware {
+		 
+		  private static ApplicationContext ctx;
+		 
+		  @Override
+		  public void setApplicationContext(ApplicationContext appContext) {
+			ctx = appContext;
+		  }
+		 
+		  public static ApplicationContext getApplicationContext() {
+			return ctx;
+		  }
+	}
+	
+	Use ContextUtils class anywhere to get Spring Beans/Component
+	=============================================================
+		ApplicationContext appCtx = ApplicationContextUtils.getApplicationContext();
+		String strFromContext = appCtx.getBean(beanName, String.class);
+	
+	
 
 	
 	

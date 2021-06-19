@@ -1,0 +1,23 @@
+Open JDK 8
+=====================
+	sudo apt update
+	sudo apt install openjdk-8-jdk
+
+Node Installation
+=====================
+curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+sudo apt install nodejs
+
+mkdir ~/.npm-global
+npm config set prefix '~/.npm-global'
+cat ~/.profile 
+nano ~/.profile 
+	add below line to the file
+	export PATH=~/.npm-global/bin:$PATH
+	
+source ~/.profile 
+npm i -g npm
+npm -v
+npm i -g yarn
+yarn --version
+

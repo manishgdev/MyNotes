@@ -1,0 +1,142 @@
+Open API
+============
+	Overview
+	=========
+		API
+		***********
+			- Application Programming Interface
+			- a method for two computer application to speak to each other
+			
+			Types :-
+				Clicking on link in Email
+				Closed APIs - technology API
+				Open APIs - adopts broadly accepted standards
+				
+			APIs allows the internet to function
+			
+			Two Primary types of WebServices
+				1. SOAP    - older legacy systems
+				2. RESTful - moden adoption, widely used
+					REST - REpresentation State Transfer
+						Representation - Typically JSON or XML
+						State transfer - Typically via HTTP
+						
+						- Verbs :- HTTP Methods : GET, PUT (Create/Update), POST(Create), DELETE, HEAD (like GET, but only asks for meta information without the body), TRACE (echo the recieved request), OPTIONS (returns HTTP methods supported by the server for the specified URL), CONNECT (Converts request to a transparent TCP/IP tunnel, typically for HTTPS through an unencrypted HTTP proxy), PATCH (Partial modifications to the specified resource)
+						- Messages:- payload of the action (JSON/XML)
+						- URI :- Uniform Resource Identifier
+						- URL :- Uniform Resource Location (URI with network information)
+						
+						- SAFE Methods :- Only fetch information and don't cause changes on the server	
+							GET, HEAD, OPTIONS, TRACE
+						
+						- IDEMPOTENT Methods :-
+							Idempotence :- A quality of an action such that repititions of the action have no further effect on the outcome
+							
+							PUT & DELETE are idempotent
+						
+							Safe methods are also idempotent
+						
+						- NON-IDEMPOTENT Methods :-
+							Multiples requests of POST are likely to create multiple resources
+							
+							POST
+						
+			HTTP Protocol
+				Standards developed by
+					1. IETF - Internet Engineering Task Force
+					2. W3C  - World Wide Web Consortium
+					
+					HTTP/1.1 still in used
+					
+				HTTP/2.0 - developed in 2015
+					- high level of compatibility with HTTP/1.1
+					- Improves page load speed by
+						- lower latency
+						- higher throughput
+						
+			HTTP Status Codes for series
+				10x - informational in nature
+				20x - indicates successful requests - 200 OK, 201 Created, 204 Accepted
+				30x - redirections - 301 Moved Permanently
+				40x - client errors - 400 Bad Request, 401 Not Authorized, 404 Not Found
+				50x - server side errors - 500 Internal Server Error, 503 Service Unavailable
+			
+	OpenAPI - OpenAPI Specification
+	===================================
+		OA3 - Open API 3.x
+		widely adopted standard for describing APIs
+		
+		specifications are defined in YAML or JSON
+		
+		OpenAPI specification is backed by formal schema
+		
+	OpenAPI 2.0 vs 3.0
+	========================
+		OpenAPI 1.0 - Swagger
+		OpenAPI 2.0 - Smart Bear acquired Swagger and came up with Open API 2.0
+		OpenAPI 3.0 - componets were made more reusable
+		
+	YAML
+	=============
+		https://learnxinyminutes.com/docs/yaml/
+		https://github.com/OAI/OpenAPI-Specification/blob/main/examples/v3.0/petstore.yaml
+		
+		https://editor.swagger.io/ - view the live view of yaml file
+		
+	OpenAPI Specification
+	=======================
+		https://github.com/OAI/OpenAPI-Specification
+		
+	JSON Schema
+	=============
+		https://json-schema.org/understanding-json-schema/
+
+	Open API DataTypes
+	=================
+		https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.2.md#data-types
+		
+	allOf, anyOf, oneOf, no
+	==========================
+		https://swagger.io/docs/specification/data-models/oneof-anyof-allof-not/
+		
+	Parameter Types
+	=================
+		https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.2.md#parameterObject
+			Path Parameters
+			Query Parameters
+			header
+			cookie
+		
+	Group API end-points by using tags property in path object
+		same end-point can be grouped into multiple groups
+		tags: 
+          - Beers
+		  
+	Common Resoinse Codes
+		200 - OK
+		201 - Resource Created
+		400 - Bad Request
+		404 - Not found
+		409 - Conflict
+		
+	Swagger Callbacks
+		https://swagger.io/docs/specification/callbacks/
+		look for more tutorials for getting further details on it
+		
+	Swagger Authentication and Authorizations
+	==========================================
+		https://swagger.io/docs/specification/authentication/
+		
+		to remove security for any end-point
+			define empty array for security attribute in the operation (GET /POST etc)
+			security: []
+	
+	
+	OpenAPI Generator
+	===================
+		https://openapi-generator.tech/
+		https://openapi-generator.tech/docs/installation
+	
+			
+				
+				

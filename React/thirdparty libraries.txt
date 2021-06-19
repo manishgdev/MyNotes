@@ -1,0 +1,58 @@
+Third Party libraries
+=============================
+	Managing Children component
+	===============================
+		1. Layout approach using props attribute
+		
+			const Layout = (props) => {
+				return (
+					<div>
+						<p>Header section</p>
+						{props.content}
+						<p>Footer section</p>
+					</div>
+				)
+
+			}
+
+			const template = (
+				<div>
+					<h1>My Content Title</h1>
+					<h3>My content description</h3>
+				</div>
+			)
+
+
+			// ReactDOM.render(<IndecisionApp />, document.getElementById('app'));
+			ReactDOM.render(<Layout content={template} />, document.getElementById('app'));
+			
+		2. Layout approach using props children
+		
+			const Layout = (props) => {
+				return (
+					<div>
+						<p>Header section</p>
+						{props.children}
+						<p>Footer section</p>
+					</div>
+				)
+
+			}
+
+			const template = (
+				<div>
+					<h1>My Content Title</h1>
+					<h3>My content description</h3>
+				</div>
+			)
+
+
+			// ReactDOM.render(<IndecisionApp />, document.getElementById('app'));
+			ReactDOM.render(<Layout>{template}</Layout>, document.getElementById('app'));
+	
+	React-Modal
+	================================
+		https://github.com/reactjs/react-modal
+		yarn add react-modal@2.2.2
+		
+		

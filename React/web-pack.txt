@@ -1,0 +1,284 @@
+Web-Pack
+=====================
+	- allows to organize our javascript
+	- it is a module bundler
+	
+	webpack transforms app.js and bundles everything into bundle.js and it can run bable also
+	
+	https://webpack.js.org/configuration/entry-context/
+	
+Node Path (Node built-in module)
+===========================================	
+	provides ways for os path manipulation
+	https://nodejs.org/api/path.html
+	
+ES6 imports / exports
+===========================================
+	1. default exports
+		- only one default export per file
+		- default exports can have the name changed while importing
+		- can't have inline export default expression
+			export default const subtract = (a, b) => a - b; // not allowed will give error
+			
+			can be fixed by
+				1. declare & export	
+					const subtract = (a, b) => a - b;
+					export default subtract;
+				2. directly export the inline function
+					export default (a, b) => a - b; // as the name doesn't matters for default export it will work
+		
+		// import
+		import MyDefaultComponent from "./MyDefaultExport";
+		
+		// export
+		const MyComponent = () => {}
+		export default MyComponent;
+		
+		util.js
+		----------
+			const square = (x) => x * x;
+			const add = (a,b) => a + b;
+			const subtract = (a, b) => a - b;
+
+			export {
+				square,                 // named
+				add,                    // named
+				subtract as default     // default
+			};
+		
+		app.js
+		---------
+			import subtractNameChange, { square, add } from './utils.js'; // changed the name of 'subtract' 	
+																		  // default export
+			
+			console.log(square(5));
+			console.log(add(200, 48));
+			console.log(subtractNameChange(200, 124));
+	2. named exports
+		utils.js
+		-------------
+		
+			const square = (x) => x * x;
+			const add = (a,b) => a + b;
+
+			export {
+				square,
+				add
+			};
+			
+			equivalent to inline export
+				export const square = (x) => x * x;
+				export const add = (a,b) => a + b;
+			
+		app.js
+		-----------
+			import { square, add } from './utils.js';
+
+			console.log(square(5));
+			console.log(add(200, 48));
+			
+		Import all the named exports into a variable
+			import * as MainComponents from "./MyComponent";
+			// use MainComponents.MyComponent and MainComponents.MyComponent2 here
+			
+			import * as Utils from './utils.js';
+			
+			console.log(Utils.square(5));
+			console.log(Utils.add(200, 48));
+			
+	Exporting React Components
+	===========================
+		1. Class Based components
+			in case of default exports we can add export default before class name
+			
+			// export
+			export class AddOption
+			
+			// import
+			import AddOption from './components/AddOption';
+			
+		2. Functional Components
+			in case of Functional Components we can do it by two ways
+			
+			1. directly export the function (Anonymous)
+				export default (props) => {
+					return (
+						<div>
+							<p>Test</p>
+						</div>
+					);
+				}
+				
+				In React Dev tools the component will show up as Unknown as the name is not defined while exporting it
+			
+			2. declare function and export
+				const Option = (props) => {
+					return (
+						<div>
+							<p>Test</p>
+						</div>
+					);
+				}
+				
+				export default Option;
+Loader
+==================
+	- by default the JSX will not work in JS file, so we have to instruct Web-Pack to transform JSX to JS using babel
+	- babel-loader => webpack plugin, used to teach webpack how to run babel when webpack sees certain files
+	
+Web-Pack Source Map
+====================
+	https://webpack.js.org/configuration/devtool/
+	
+	used to debug the code
+	
+	It helps the browser to find out where the error exactly is instead of showing some location in bundle.js file
+	
+	It gives the location of console.log & errors in the application
+	
+Web-Pack DevServer
+=====================
+	yarn add webpack-dev-server@2.5.1
+	
+	doesn't require build.js file as it keeps the file in memory
+	
+	reduces the requirement of live-server with somethings specific to web-pack
+	
+babel transform class properties
+=====================================
+	yarn add babel-plugin-transform-class-properties@6.24.1
+	
+	configure this in .babelrc
+		{
+			"presets": [
+				"env",
+				"react"
+			],
+			"plugins" : [
+				"transform-class-properties"
+			]
+		}
+	
+	removes the need of
+		1. manual binding of methods in the constructor
+		2. state variable in the constructor
+	
+	How to transform old code
+		1. properties in constructor are moved out of constructor (move out the state property)
+		2. remove the bindings in the constructor for event handlers
+		3. convert the functions into properties using arrow functions
+		
+	Declarations
+	=================
+		class OldSyntax {
+			constructor() {
+				this.name="Andrew";
+				this.getGreeting = this.getGreeting.bind(this);
+			}
+
+			getGreeting() {
+				return `Greeting from ${this.name} using old syntax`;
+			}
+		}
+
+		const oldSyntax = new OldSyntax();
+		const oldGreeting = oldSyntax.getGreeting;
+		console.log(oldSyntax);
+		console.log(oldGreeting())
+
+		class NewSyntax {
+			name = "Manish";
+
+			getGreeting = () => {
+				return `Greeting from ${this.name} using new syntax`;
+			}
+		}
+
+		const newSyntax = new NewSyntax();
+		const newGreeting = newSyntax.getGreeting;
+		console.log(newSyntax);
+		console.log(newGreeting());
+	
+	Output
+	========
+		OldSyntax {name: "Andrew"}
+		Greeting from Andrew using old syntax
+		NewSyntax {name: "Manish"}
+		Greeting from Manish using new syntax
+		
+Web-Pack css
+=================
+	css-loader
+	style-loader
+	
+	yarn add style-loader@0.18.2 css-loader@0.28.4
+	
+	- here "use" in the rules allows multiple loaders
+	
+	in webpack.config.js
+	module : {
+		rules : [
+			{
+				...
+			},
+			{
+			  test: /\.css$/,
+			  use : [
+				"style-loader", 
+				"css-loader"
+			  ]
+
+			}
+		]
+	}
+	
+SCSS
+=============
+	sass-lang.com/guide
+	
+	saas vs scss
+	=============
+		scss have curly braces and semi-colon which are not there in saas
+	
+	install loaders
+		yarn add sass-loader node-sass
+	
+	Node.js: Python not found exception due to node-sass and node-gyp
+	the problem is with internal dependency that is node-gyp v3.5.0 from node-sass v3.8.0
+	
+	https://stackoverflow.com/questions/45801457/node-js-python-not-found-exception-due-to-node-sass-and-node-gyp
+	
+	Force upgrade of node-gyp
+		You can also try to upgrade your project to use node-gyp v8.0.0 instead of node-gyp v3.8.0. In this case, add the following resolution entry to your package.json:
+
+		  "resolutions": {
+			"node-gyp": "8.0.0"
+		  }
+		Afterwards, make sure that you have Python 3 installed and Visual Studio 2017 Build Tools and/or Visual Studio 2019 Build Tools. You can also run npm config delete msvs_version to let node-gyp automatically detect your VS version.
+	
+		Install Visual Studio 2017 (with C++ build tools) or higher and add resolutions in the package.json and then proceed with yarn installcmd
+		
+		
+		Set-ExecutionPolicy Unrestricted -Scope CurrentUser -Force
+
+		then run:
+
+		npm install -g windows-build-tools
+
+		wait for it to install and then run:
+
+		window-build-tools
+		
+		https://docs.datastax.com/en/jdk-install/doc/jdk-install/installOpenJdkDeb.html
+		
+		https://github.com/nodejs/node-gyp#the-bindinggyp-file
+		
+		
+	
+	
+	
+
+		
+		
+	
+	

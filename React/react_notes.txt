@@ -1,0 +1,452 @@
+live-server
+	yarn global add live-server
+	
+	add yarn bin path to the PATH
+		C:\Users\singman\AppData\Local\Yarn\bin
+	
+	Verify live-server installation
+		live-server -v 
+		
+	Serve public folder in browser
+		live-server public
+	
+JSX - JavaScript XML
+	var template = <p>This is my first JSX Template</p>
+	
+	Conversion done by Babel
+	var template = /*#__PURE__*/React.createElement("p", null, "This is my first JSX Template");
+Babel
+	Javascript compiler
+	yarn global add babel-cli
+	
+	Add presets in project
+		yarn add babel-preset-react babel-preset-env
+	
+	Compile JSX code from src/app.js to public/scripts/app.js
+		babel src/app.js --out-file=public/scripts/app.js --presets=env,react
+		
+		babel src/app.js --out-file=public/scripts/app.js --presets=env,react --watch
+		
+	Babel ES6/ES7 extension in VSCode
+	
+Remove babel-cli & live-server
+	yarn global remove babel-cli live-server
+	
+JSX Rules
+============
+	1. Adjacent JSX elements must be wrapped in an enclosing tag
+		var template = <h1>My React app</h1><p>Test</p>; // not allowed
+		
+		var template = <div><h1>My React app</h1><p>Test</p></div>;  // can be written as below
+		var template = (
+			<div>  
+				<h1>My React app</h1>
+				<p>Test</p>
+			</div>
+		);
+		
+	2. Uncaught Error: Objects are not valid as a React child (found: object with keys {name, age, location}). If you meant to render a collection of children, use an array instead.
+		var user = {
+			"name" : "Manish",
+			"age" : 31,
+			"location" : "Mumbai"
+		}
+		
+		var template2 = (
+			<div>  
+				<h1>{user}</h1>
+				<p>Age : {userAge}</p>
+				<p>Location : {userLocation}</p>
+			</div>
+		);
+		
+		above template will give error	
+	
+	3. undefined, null and false are ignored by JSX
+		
+		undefined is returned implicitly, if expression returns undefined nothing will be displayed
+		function getUserLocation(location) {
+			if(location) {
+				return <p>Location : {location}</p>;
+			}
+		}
+
+		var template2 = (
+			<div>  
+				<h1>{user.name}</h1>
+				<p>Age : {user.age}</p>
+				{getUserLocation(user.location)}
+			</div>
+		);
+		
+		function getUserLocation(location) {
+			if(location) {
+				return <p>Location : {location}</p>;
+			}
+		}
+		
+		is equivalent to 
+		function getUserLocation(location) {
+			if(location) {
+				return <p>Location : {location}</p>;
+			}
+			return undefined;
+		}
+		
+	4. Logical Operators
+		true && "String Output"
+		O/p - "String Output"
+		
+		false && "String Output"
+		O/p - false
+		
+		
+		var user = {
+			"name" : "Manish",
+			"age" : 31,
+			"yearOfBirth" : 1990,
+			"location" : "Mumbai"
+		}
+
+		function getUserLocation(location) {
+			if(location) {
+				return <p>Location : {location}</p>;
+			}
+		}
+
+		var template2 = (
+			<div>  
+				<h1>{user.name ? user.name : "Anonymous"}</h1>
+				<p>Age : {user.age}</p>
+				{(user.age && user.age > 18) && <p>Birth Year : {user.yearOfBirth}</p>}
+				{getUserLocation(user.location)}
+			</div>
+		);
+		
+React JSX Comment
+===================
+https://wesbos.com/react-jsx-comments
+	 {/*<button onClick={incrClick}>+1</button> */}
+	 
+	 <button onClick={()=> console.log("Arrow Function click")}>+1</button>
+	 
+		
+JSX Attribute & Events
+=============
+	https://reactjs.org/docs/dom-elements.html
+	https://reactjs.org/docs/events.html
+	
+	id - id
+	class - className (as class is a reserved word)
+	
+Manual Data-binding
+========================
+	re-render required after value is changed
+	react uses virtual dom algorithm to render or re-render application
+	
+	const addOne = () => {
+		count++;
+		renderCounterApp();
+		console.log("add count clicked :- "+count)
+	};
+	const minusOne = () => {
+		count--;
+		renderCounterApp();
+		console.log("Minus one clicked")
+	};
+	const resetCount = () => {
+		count = 0;
+		renderCounterApp();
+		console.log("Reset button clicked")
+	};
+	
+	const renderCounterApp = () => {
+
+		const template2 = (
+			<div>
+				<h1>Count : {count}</h1>
+				{/*<button onClick={() => console.log("Arrow Clicked")}>+1</button> */}
+				<button onClick={addOne}>+1</button>
+				<button onClick={minusOne}>-1</button>
+				<button onClick={resetCount}>Reset</button>
+			</div>
+		);
+
+		ReactDOM.render(template2, appRoot);
+	}
+
+	renderCounterApp();
+
+JSX Arrays
+============
+	{
+		[97,98,99, null, undefined, true, false]
+	}
+	is equivalent to
+	{97}{98}{99} // as null, undefined and boolean are ignored
+	
+	{
+		[<p>a</p>, <p>b</p>, <p>c</p>]
+	}
+	above will give warning to add key to individual things to optimize the rendering
+	{
+		[<p key="1">a</p>, <p key="2">b</p>, <p key="3">c</p>]
+	}
+	
+	const numbers = [55, 101, 2001]
+	
+	Inside template	
+	{
+		numbers.map((num) => {
+			return <p key={num}>Number: {num}</p>
+		})
+	}
+	
+	<ol>
+		{/* map over app.options */}
+		{
+			app.options.map((opt, idx) => <li key={idx}>{opt}</li>)
+		}
+	</ol>
+	
+React Components
+===================
+	- class should extend React.Component
+	- should provide implementation for render() method
+	- Component should have the first letter capital, it is with this convention that react distinguishes between native HTML and react tags
+	
+	class Header extends React.Component {
+		render() {
+			return (
+				<div>
+					<h1>Indecission</h1>
+					<h2>Computer will take decission on your behalf</h2>
+				</div>
+			);
+		}
+	}
+	
+	const jsx = (
+		<div>
+			<Header />
+			
+		</div>
+	);
+
+	ReactDOM.render(jsx, document.getElementById("app"))
+	
+	after transpile
+	
+		var jsx = React.createElement(
+			"div",
+			null,
+			React.createElement(Header, null)
+		);
+
+		ReactDOM.render(jsx, document.getElementById("app"));
+		
+	=> Component Properties
+		
+		const jsx = (
+			<div>
+				<Header title="ABC" />
+				
+			</div>
+		);
+	
+		properties will be converted into key-value pair in the Header component class
+		class Header extends React.Component {
+			console.log(this.props); // {"title" : "ABC"}
+			render() {
+				return (
+					<div>
+						<h1>Indecission</h1>
+						<h2>Computer will take decission on your behalf</h2>
+					</div>
+				);
+			}
+		}
+	
+bind()
+============
+	https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_objects/Function/bind
+
+	const obj = {
+		name:"Manish",
+		getName() {
+			return this.name;
+		}
+	}
+
+	console.log(obj.getName())
+	// const obGetName = obj.getName;
+	// console.log(obGetName()) // this will cause error as the scope of this is lost inside getName function in obj
+	const obGetName = obj.getName.bind(obj);
+	console.log(obGetName())
+	const obGetName2 = obj.getName.bind({name:"Piyush"});
+	console.log(obGetName2())
+
+React Component State
+==========================
+
+	1. Setup default state object {count: 1}
+	2. Component rendered with default state values (done internally by react)
+	3. change state based on events
+	4. Component re-rendered using new state values (done internally by react)
+	5. Start again at Step 3
+	
+Props vs State
+===========================
+	|-------------------------------------------------------------------------------------|
+	|	Props											|				State             |
+	--------------------------------------------------------------------------------------|
+	|	An Object										|	An object                     |
+	|	Can be used when rendering						|	Can be used when rendering    |
+	|	Changes (from above/parent) causes re-render	|	Changes causes re-render      |
+	|	Comes from parent								| 	Defined in component itself   |
+	|	Can't be changed by component itself			|	Can be changed by componet    |
+	|-------------------------------------------------------------------------------------|
+
+Class Based Component 
+================================
+	class IndecissionApp extends React.Component {
+		constructor(props) {
+		
+		}
+		
+		componentDidMount() { // <= lifecycle method
+		
+		}
+		
+		componentDidUpdate(prevProps, prevState) { // lifecycle method (triggered on state & props changed)
+			console.log("Indecission Component Updated !!")
+		} 
+		
+		componentWillUnmount() {  // lifecycle method
+			console.log("Component will unmount");
+		}
+		
+		// to test above from console
+		// ReactDOM.render(React.createElement("p"), document.getElementById("app"))
+		// React Component Lifecycle - https://reactjs.org/docs/react-component.html
+		render() {
+		
+		}
+		
+	}
+
+Functional Component (Stateless functional component)
+=====================================================
+	- concerned with managing presentation of component
+	- can be used with simple components
+	- lifecycle methods not available for Functional Component
+	
+		const User = (props) => {
+
+			return (
+				<div>
+					<p>Name : {props.name}</p>
+					<p>Age : {props.age}</p>
+				</div>
+			);
+		}
+
+	ReactDOM.render(<User name="Manish" age="31"/>, document.getElementById("app"))
+	
+	- They are faster than Class based component as they don't have to extend React.Component and extra code comes with Class based components
+	
+Default Props
+=============================
+	- can be set for both Functional as well as Class based components
+		Counter.defaultProps = {
+			count : 0
+		}
+
+		ReactDOM.render(<Counter count={50} />, document.getElementById("app"))
+	
+	
+setState Single Line Returns (short hand return statements)
+=============================================================
+
+	- replace the curly braces of arrow function with parenthesis
+	- remove the return statement
+	
+	First Variation
+	==================
+		this.setState(() => {
+			return {
+				options:[]
+			}
+		});
+		
+		is equivalent to
+		
+		this.setState(() => ({ options: [] })); // Implicit Return statement
+	
+	Second Variation
+	==================
+		handleSingleDeleteOption(option) {
+			console.log(`Delete the option '${option}'`)
+			this.setState((prevState) => 			
+				return {
+					options : prevState.options.filter((opt) => {
+						return option !== opt;
+					});
+				}
+			);
+		}
+		
+		is equivalent to
+		
+		handleSingleDeleteOption(option) {
+			console.log(`Delete the option '${option}'`)
+			this.setState((prevState) => ({
+				options : prevState.options.filter((opt) => {
+					return option !== opt;
+				})
+			}));
+		}
+		
+		is equivalent to 
+		
+		handleSingleDeleteOption(option) {
+			console.log(`Delete the option '${option}'`)
+			this.setState((prevState) => ({
+				options : prevState.options.filter((opt) => option !== opt)
+			}));
+		}
+	
+	The above approach can be applied to stateless functional controls also
+		
+		const Header = (props) => {
+			return (
+			  <div>
+				<h1>{props.title}</h1>
+				{props.subtitle && <h2>{props.subtitle}</h2>}
+			  </div>
+			);
+		};
+		
+		// is equivalent to
+		
+		const Header = (props) => (
+			(
+			  <div>
+				<h1>{props.title}</h1>
+				{props.subtitle && <h2>{props.subtitle}</h2>}
+			  </div>
+			)
+		);
+		
+Local Storage
+================================
+	- works with strings only, even if we add numeric value, while storing it will be converted to string
+
+	localStorage.setItem("name", "Manish");
+	localStorage.getItem("name")
+	localStorage.removeItem("name")
+	
+	
+
+
+		
