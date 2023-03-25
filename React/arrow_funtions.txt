@@ -86,3 +86,5 @@ Arrow Functions
 		}
 		
 		console.log(placesLivedArrow3());
+		
+	
