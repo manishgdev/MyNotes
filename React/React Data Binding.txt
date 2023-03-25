@@ -1,0 +1,73 @@
+JSX Data Binding
+=====================
+	- JSX doesnot has built-in data binding
+	
+		let count = 0;
+		const someId = "myId" // this can be used as expression in id attribute in template
+		const addOne = () => {
+			count++;
+			console.log("add count clicked :- "+count)
+		};
+		const minusOne = () => {
+			count--;
+			console.log("Minus one clicked")
+		};
+		const resetCount = () => {
+			count = 0;
+			console.log("Reset button clicked")
+		};
+	
+		const template2 = (
+        <div>
+            <h1>Count : {count}</h1>
+            {/*<button onClick={() => console.log("Arrow Clicked")}>+1</button> */}
+            <button onClick={addOne}>+1</button>
+            <button onClick={minusOne}>-1</button>
+            <button onClick={resetCount}>Reset</button>
+			</div>
+		);
+
+		ReactDOM.render(template2, appRoot)
+		
+		NOTE :- 
+			- Every time a button is clicked, the count variable value changes but the variable in UI will not change as JSX doesnot have built-in data binding
+			
+	- Manual Data Binding by re-rendering
+		
+		let count = 0;
+		const someId = "myId" // this can be used as expression in id attribute in template
+		const addOne = () => {
+			count++;
+			console.log("add count clicked :- "+count)
+			renderCounterApp(); // on every click re-render the template
+		};
+		const minusOne = () => {
+			count--;
+			console.log("Minus one clicked")
+			renderCounterApp();
+		};
+		const resetCount = () => {
+			count = 0;
+			console.log("Reset button clicked")
+			renderCounterApp();
+		};
+		
+		const renderCounterApp = () => {
+
+		const template2 = (
+				<div>
+					<h1>Count : {count}</h1>
+					{/*<button onClick={() => console.log("Arrow Clicked")}>+1</button> */}
+					<button onClick={addOne}>+1</button>
+					<button onClick={minusOne}>-1</button>
+					<button onClick={resetCount}>Reset</button>
+				</div>
+			);
+
+			ReactDOM.render(template2, appRoot);
+		}
+
+		renderCounterApp();
+		
+
+		

@@ -1,0 +1,88 @@
+Arrow Functions
+=======================
+	1. Arrow Function Expression (Shorthand syntax for one line operations)
+	
+		const square = function(x) {
+			return x * x;
+		}
+
+		const sqArrow = (x) => x*x; // arrow function expression syntax
+		
+	2. 	arguments object not bound with arrow function
+	
+		const add = function(a, b) {
+			console.log(arguments);
+			return a + b;
+		}
+
+		add(4, 5); will print [4, 5] and then sum of [4, 5]
+		add(4, 5, 6); will print [4, 5, 6] even though method is declared with two params and then sum of [4, 5]
+
+		// arrow function
+
+		const add = (x) => {
+			console.log(arguments); // arguments is not defined, will give error
+			return a + b;
+		}
+		
+	3. this keyword not bound to arrow function
+		
+		const user = {
+		name : "Manish",
+		cities : ["Mumbai", "Bikaner", "Varanasi"],
+		placesLived : function() {
+			console.log(this.name);
+			console.log(this.cities);
+			const that = this;
+			this.cities.forEach(function(city) {
+				// console.log("this.name :- "+this.name + " has lived in ", city); // this is not accessible
+				console.log("that.name :- "+that.name + " has lived in ", city);
+			})
+		},
+		placesLivedArrow : function () {
+			this.cities.forEach((city) => { // this refers to parent scope of function i.e. the user object
+				console.log(this.name + " has lived in ", city);
+			})
+		},
+		placesLivedArrow2 : () => { // this arrow function doesn't bind its own "this" value and goes up to the parent scope which is global scope (parent of user object) and is undefined
+			this.cities.forEach((city) => { // this here will be undefined
+				console.log(this.name + " has lived in ", city);
+			}) 
+		},
+		placesLivedArrow3() { // to avoid implementation array of placesLivedArrow2
+			this.cities.forEach((city) => { 
+				console.log(this.name + " has lived in ", city);
+			}) 
+		}
+	}
+
+	- for the above user object placesLived() is normal ES5 syntax, this is not accessible inside the cities iterator, so we have to create a "that" variable and copy "this" into "that" & then we can get the name property
+	- placesLivedArrow -> with the use of Arrow function, the arrow function doesn't bind its own "this" value, rather it refers to parent scope of the function, in this case parent scope for "placesLivedArrow" is user object
+	- placesLivedArrow3() -> ES6 definition similar to "placesLivedArrow" function
+	
+	
+	- map implementation for placesLivedArrow3
+	
+		const user = {
+		name : "Manish",
+		cities : ["Mumbai", "Bikaner", "Varanasi"],
+			placesLivedArrow3() { // to avoid implementation array of placesLivedArrow2
+				return this.cities.map((city) => { 
+					return this.name + " has lived in ", city;
+				});
+			}
+		}
+		
+		console.log(placesLivedArrow3());
+		
+		or 
+		
+		const user = {
+		name : "Manish",
+		cities : ["Mumbai", "Bikaner", "Varanasi"],
+			placesLivedArrow3() { // to avoid implementation array of placesLivedArrow2
+				return this.cities.map((city) =>  this.name + " has lived in ", city);
+			}
+		}
+		
+		console.log(placesLivedArrow3());

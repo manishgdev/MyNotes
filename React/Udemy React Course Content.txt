@@ -1,0 +1,21 @@
+$$('div[data-purpose=section-panel-2] ul.ud-unstyled-list span[data-purpose=item-title]')
+title.forEach((x) => console.log(x.innerHTML));
+
+Hello React
+	1. Section Intro: Hello React
+	2. Setting up a Web Server
+	3. Hello React
+	4. Setting up Babel
+	5. Exploring JSX
+	6. JSX Expressions
+	Conditional Rendering in JSX
+	ES6 Aside: const and let
+	ES6 Aside: Arrow Functions
+	ES6 Aside: Arrow Functions Part II
+	Events and Attributes
+	Manual Data Binding
+	Forms and Inputs
+	Arrays in JSX
+	Picking an Option
+	Build It: Visibility Toggle
+

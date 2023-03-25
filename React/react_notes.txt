@@ -1,43 +1,58 @@
-live-server
-	yarn global add live-server
-	
-	add yarn bin path to the PATH
-		C:\Users\singman\AppData\Local\Yarn\bin
-	
-	Verify live-server installation
-		live-server -v 
+Utilities
+==============
+	live-server
+		yarn global add live-server
 		
-	Serve public folder in browser
-		live-server public
-	
-JSX - JavaScript XML
-	var template = <p>This is my first JSX Template</p>
-	
-	Conversion done by Babel
-	var template = /*#__PURE__*/React.createElement("p", null, "This is my first JSX Template");
-Babel
-	Javascript compiler
-	yarn global add babel-cli
-	
-	Add presets in project
-		yarn add babel-preset-react babel-preset-env
-	
-	Compile JSX code from src/app.js to public/scripts/app.js
-		babel src/app.js --out-file=public/scripts/app.js --presets=env,react
+		add yarn bin path to the PATH
+			C:\Users\singman\AppData\Local\Yarn\bin
 		
-		babel src/app.js --out-file=public/scripts/app.js --presets=env,react --watch
+		Verify live-server installation
+			live-server -v 
+			
+		Serve public folder in browser
+			live-server public
 		
-	Babel ES6/ES7 extension in VSCode
+	JSX - JavaScript XML
+		var template = <p>This is my first JSX Template</p>
+		
+		Conversion done by Babel
+		var template = /*#__PURE__*/React.createElement("p", null, "This is my first JSX Template");
+	
+	Babel (Transpiles JSX to Javascript)
+		Javascript compiler
+		yarn global add babel-cli
+		
+		Add presets in project
+			yarn add babel-preset-react babel-preset-env
+		
+		Compile JSX code from src/app.js to public/scripts/app.js
+			babel src/app.js --out-file=public/scripts/app.js --presets=env,react
+			
+			To watch for changes in source file and write to output file
+			babel src/app.js --out-file=public/scripts/app.js --presets=env,react --watch
+			
+		Babel ES6/ES7 extension in VSCode
+		
+		JSX 
+			var template = <p>test p tag</p>
+			var template = <p id="test">test p tag</p>
+		JS Converted
+			var template = /*#__PURE__*/React.createElement("p", null, "test p tag");
+			var template = /*#__PURE__*/React.createElement("p", {
+			  id: "test"
+			}, "test p tag");
+		
 	
 Remove babel-cli & live-server
 	yarn global remove babel-cli live-server
 	
-JSX Rules
-============
+JSX (JavaScript XML) Rules
+=============================
 	1. Adjacent JSX elements must be wrapped in an enclosing tag
 		var template = <h1>My React app</h1><p>Test</p>; // not allowed
 		
-		var template = <div><h1>My React app</h1><p>Test</p></div>;  // can be written as below
+		// above adjacent tags can be wrapped in one root/parent div tag
+		var template = <div><h1>My React app</h1><p>Test</p></div>;  // can also be written as below
 		var template = (
 			<div>  
 				<h1>My React app</h1>
@@ -75,7 +90,7 @@ JSX Rules
 			<div>  
 				<h1>{user.name}</h1>
 				<p>Age : {user.age}</p>
-				{getUserLocation(user.location)}
+				{getUserLocation(user.location)} // will not print anything if the expression resolves to Undefined
 			</div>
 		);
 		
@@ -93,7 +108,7 @@ JSX Rules
 			return undefined;
 		}
 		
-	4. Logical Operators
+	4. Logical Operators (When we want to do only one thing if condition matches else don't do anything)
 		true && "String Output"
 		O/p - "String Output"
 		
@@ -123,6 +138,8 @@ JSX Rules
 			</div>
 		);
 		
+		// In above example <p>Birth Year : {user.yearOfBirth}</p> will only be printed if (user.age && user.age > 18) evaluates to true
+		
 React JSX Comment
 ===================
 https://wesbos.com/react-jsx-comments
@@ -132,82 +149,14 @@ https://wesbos.com/react-jsx-comments
 	 
 		
 JSX Attribute & Events
-=============
+=========================
 	https://reactjs.org/docs/dom-elements.html
 	https://reactjs.org/docs/events.html
 	
 	id - id
 	class - className (as class is a reserved word)
-	
-Manual Data-binding
-========================
-	re-render required after value is changed
-	react uses virtual dom algorithm to render or re-render application
-	
-	const addOne = () => {
-		count++;
-		renderCounterApp();
-		console.log("add count clicked :- "+count)
-	};
-	const minusOne = () => {
-		count--;
-		renderCounterApp();
-		console.log("Minus one clicked")
-	};
-	const resetCount = () => {
-		count = 0;
-		renderCounterApp();
-		console.log("Reset button clicked")
-	};
-	
-	const renderCounterApp = () => {
 
-		const template2 = (
-			<div>
-				<h1>Count : {count}</h1>
-				{/*<button onClick={() => console.log("Arrow Clicked")}>+1</button> */}
-				<button onClick={addOne}>+1</button>
-				<button onClick={minusOne}>-1</button>
-				<button onClick={resetCount}>Reset</button>
-			</div>
-		);
 
-		ReactDOM.render(template2, appRoot);
-	}
-
-	renderCounterApp();
-
-JSX Arrays
-============
-	{
-		[97,98,99, null, undefined, true, false]
-	}
-	is equivalent to
-	{97}{98}{99} // as null, undefined and boolean are ignored
-	
-	{
-		[<p>a</p>, <p>b</p>, <p>c</p>]
-	}
-	above will give warning to add key to individual things to optimize the rendering
-	{
-		[<p key="1">a</p>, <p key="2">b</p>, <p key="3">c</p>]
-	}
-	
-	const numbers = [55, 101, 2001]
-	
-	Inside template	
-	{
-		numbers.map((num) => {
-			return <p key={num}>Number: {num}</p>
-		})
-	}
-	
-	<ol>
-		{/* map over app.options */}
-		{
-			app.options.map((opt, idx) => <li key={idx}>{opt}</li>)
-		}
-	</ol>
 	
 React Components
 ===================
@@ -280,7 +229,7 @@ bind()
 
 	console.log(obj.getName())
 	// const obGetName = obj.getName;
-	// console.log(obGetName()) // this will cause error as the scope of this is lost inside getName function in obj
+	// console.log(obGetName()) // "this" will cause error as the scope of "this" is lost inside getName function in obj
 	const obGetName = obj.getName.bind(obj);
 	console.log(obGetName())
 	const obGetName2 = obj.getName.bind({name:"Piyush"});
@@ -297,7 +246,7 @@ React Component State
 	
 Props vs State
 ===========================
-	|-------------------------------------------------------------------------------------|
+	+-------------------------------------------------------------------------------------+
 	|	Props											|				State             |
 	--------------------------------------------------------------------------------------|
 	|	An Object										|	An object                     |
@@ -305,7 +254,7 @@ Props vs State
 	|	Changes (from above/parent) causes re-render	|	Changes causes re-render      |
 	|	Comes from parent								| 	Defined in component itself   |
 	|	Can't be changed by component itself			|	Can be changed by componet    |
-	|-------------------------------------------------------------------------------------|
+	+-------------------------------------------------------------------------------------+
 
 Class Based Component 
 ================================

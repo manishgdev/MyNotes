@@ -30,7 +30,7 @@ var, let & const all are function scoped, not visible outside the function where
 
 	console.log(petName); // not visible
 	
-	- var is method level scope
+	- var is method level scope (var defined inside the block is accessible outside the block it is defined within the same method)
 		var fullName = "Manish Singh";
 		if(fullName) {
 			var firstName = fullName.split(" ") [0];
@@ -38,13 +38,22 @@ var, let & const all are function scoped, not visible outside the function where
 		}
 		console.log("FirstName outside Block :- ", firstName);
 	
-	- scope for firstName is same as fullName
+		- scope for firstName is same as fullName 
 
-	- let and const are block level scoped
-		const fullName = "Manish Singh";
-		if(fullName) {
-			let firstName = fullName.split(" ") [0];
-			console.log("FirstName in Block :- ", firstName)
-		}
-		console.log("FirstName outside Block :- ", firstName); // will give undefined
+let and const are block level scoped
+	const fullName = "Manish Singh";
+	if(fullName) {
+		let firstName = fullName.split(" ") [0];
+		console.log("FirstName in Block :- ", firstName)
+	}
+	console.log("FirstName outside Block :- ", firstName); // will give undefined
 	
+	// for above to work firstName should be defined outside if block
+	const fullName = "Manish Singh";
+	let firstName ;
+	if(fullName) {
+		firstName = fullName.split(" ") [0];
+		console.log("FirstName in Block :- ", firstName)
+	}
+
+	console.log("FirstName outside Block :- ", firstName); // will work

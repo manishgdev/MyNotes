@@ -1,0 +1,94 @@
+JSX Arrays
+============
+	{
+		[97,98,99, null, undefined, true, false]
+	}
+	is equivalent to
+	{97}{98}{99} // as null, undefined and boolean are ignored
+	
+	Rendering JSX In Arrays
+	{
+		[<p>a</p>, <p>b</p>, <p>c</p>]
+	}
+	above will give warning to add key to individual key/properties to optimize the rendering
+	{
+		[<p key="1">a</p>, <p key="2">b</p>, <p key="3">c</p>]
+	}
+	
+	Outputs
+	a
+	b
+	c
+	
+	const numbers = [55, 101, 2001]
+	
+	Inside template	
+		{
+			numbers.map((num) => {
+				return <p key={num}>Number: {num}</p>
+			})
+		}
+	
+	To Create Ordered list
+		<ol>
+			{/* map over app.options */}
+			{
+				app.options.map((opt, idx) => <li key={idx}>{opt}</li>)
+			}
+		</ol>
+	
+=====> Real Example
+const app = {
+    'title' : 'My React App',
+    'subtitle' : 'Learning to develop React App',
+    'options' : []
+}
+
+const onFormSubmit = (e) => {
+    e.preventDefault(); // avoids full page refresh and data will not be added to the url
+
+    const option = e.target.elements.option.value;
+
+    if(option) {
+        app.options.push(option);
+        console.log(app.options)
+        e.target.elements.option.value = "";
+        reRenderApp();
+    }
+
+    console.log("Form submitted")
+}
+
+const removeAllItems = () => {
+    app.options = [];
+    reRenderApp();
+}
+
+const appRoot = document.getElementById("app");
+
+const reRenderApp = () => {
+    const template = (
+        <div>
+            <h1>{app.title}</h1>
+            {app.subtitle && <p>{app.subtitle}</p>}
+            <p>{app.options && app.options.length > 0 ? "Here are your options" : "No Options"}</p>
+            <p>{app.options.length}</p>
+            <button onClick= {removeAllItems}>Remove All</button>
+            <ol>
+                {/* map over app.options */}
+                {
+                    app.options.map((opt, idx) => <li key={idx}>{opt}</li>)
+                }
+            </ol>
+            <form onSubmit={onFormSubmit}>
+                <input type="text" name="option"/>
+                <button>Add Option</button>
+                
+            </form>
+        </div>
+    );
+    ReactDOM.render(template, appRoot);
+}
+
+reRenderApp();
+
