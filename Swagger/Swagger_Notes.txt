@@ -1,5 +1,10 @@
 Open API
 ============
+Resources -
+	Swagger UI - 
+		Specification :- https://swagger.io/specification/v3/#specification
+		Configuration :- https://github.com/swagger-api/swagger-ui/blob/master/docs/usage/configuration.md
+
 	Overview
 	=========
 		API
