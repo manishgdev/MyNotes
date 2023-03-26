@@ -1,13 +1,13 @@
-$$('div[data-purpose=section-panel-2] ul.ud-unstyled-list span[data-purpose=item-title]')
+var title = $$('div[data-purpose=section-panel-2] ul.ud-unstyled-list span[data-purpose=item-title]')
 title.forEach((x) => console.log(x.innerHTML));
 
 Hello React
-	1. Section Intro: Hello React
-	2. Setting up a Web Server
-	3. Hello React
-	4. Setting up Babel
-	5. Exploring JSX
-	6. JSX Expressions
+	Section Intro: Hello React
+	Setting up a Web Server
+	Hello React
+	Setting up Babel
+	Exploring JSX
+	JSX Expressions
 	Conditional Rendering in JSX
 	ES6 Aside: const and let
 	ES6 Aside: Arrow Functions
@@ -19,3 +19,21 @@ Hello React
 	Picking an Option
 	Build It: Visibility Toggle
 
+React Components
+	Section Intro: React Components
+	Thinking in React
+	ES6 Classes: Part I
+	ES6 Classes: Part II
+	Creating a React Component
+	Nesting Components
+	Component Props
+	Events &amp; Methods
+	Method Binding
+	What Is Component State?
+	Adding State to Counter App: Part I
+	Adding State to Counter App: Part II
+	Alternative setState Syntax
+	Build It: Adding State to VisibilityToggle
+	Indecision State: Part I
+	Indecision State: Part II
+	Summary: Props vs. State

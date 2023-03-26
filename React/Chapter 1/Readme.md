@@ -7,6 +7,7 @@
   - [JSX Basics](#jsx-basics)
     - [Important JSX Rules](#important-jsx-rules)
   - [ES6 Basics](#es6-basics)
+    - [Properties shorthand](#properties-shorthand)
     - [var, const and let](#var-const-and-let)
     - [Arrow Functions](#arrow-functions)
   - [JSX Data Binding](#jsx-data-binding)
@@ -137,6 +138,26 @@ var template2 = (
 ```
 
 ## ES6 Basics
+
+### Properties shorthand
+  ```
+  const error = "abc";
+  const obj = {
+    name : "Manish",
+    error: error,
+    age : 26
+  }
+  ```
+  above can be written using shorthand syntax as 
+  ```
+  const error = "abc";
+  const obj = {
+    name : "Manish",
+    error,
+    age : 26
+  }
+  ```
+  when value variable name is same as key name, then we can skip writing the key name explicitlys
 
 ### var, const and let
 - Declare and Assign
@@ -281,13 +302,14 @@ console.log("nameConst :- ", nameConst)
     for `this.cities` the `this` keyword is not bound to `user` object but instead it is bound to `global` scope and hence will give `undefined` and cause error
   4. `placesLivedArrow3` shorthand arrow function as property<br/>
     with new ES6 implementation, function can be declared without attribute and the resultant code will be as below
-    ```
-    placesLivedArrow3: function() { 
-			this.cities.forEach((city) => { 
-				console.log(this.name + " has lived in ", city);
-			}) 
-		}
-    ```
+      ```
+      placesLivedArrow3: function() { 
+        this.cities.forEach((city) => { 
+          console.log(this.name + " has lived in ", city);
+        }) 
+      }
+      ```
+
 ## JSX Data Binding
   - JSX doesnot has built-in data binding
     ```

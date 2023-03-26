@@ -178,7 +178,7 @@ React Components
 	const jsx = (
 		<div>
 			<Header />
-			
+			<p>Some message of the app</p>
 		</div>
 	);
 
@@ -240,7 +240,7 @@ React Component State
 
 	1. Setup default state object {count: 1}
 	2. Component rendered with default state values (done internally by react)
-	3. change state based on events
+	3. change state based on events 
 	4. Component re-rendered using new state values (done internally by react)
 	5. Start again at Step 3
 	
