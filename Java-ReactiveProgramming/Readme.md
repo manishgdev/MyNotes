@@ -36,6 +36,21 @@ By adopting reactive programming, developers can create systems that are more ef
 Q. Flow Interface ?\
 Q. map & flatMap ?\
 Q. Iterator Pattern\
-Q. Observer Pattern
+Q. Observer Pattern\
+Q. Mono & Flux
+
+Flux & Mono both can send below
+1. An Item
+2. A complete event - terminal event
+3. A failure event - terminal event
+
+log operator in flux
+
+https://projectreactor.io/docs/core/release/reference/index.html#which-operator
+
+https://projectreactor.io/docs/core/release/api/reactor/core/publisher/Operators.html
+
+
+Flux.doFinally()
 
 
